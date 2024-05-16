@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "Product-Sans";
+    src: url("../utils/fonts/Product\ Sans\ Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Product-Sans-bold";
+    src: url("../utils/fonts/Product\ Sans\ Bold.ttf") format("truetype");
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 00;
+    color: #474747;
+    font-family: "Product-Sans-bold", sans-serif;
+    background-color: #f1efe9;
+    overflow-y: hidden;
+}
+
+/* verde: #3B563C */
+
+
