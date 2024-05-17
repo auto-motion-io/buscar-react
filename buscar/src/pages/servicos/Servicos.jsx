@@ -1,12 +1,12 @@
 import React from "react";
 import NavBar from "../../components/navbar/NavBar";
 
-const Home = () => {
+const Servicos = () => {
   return (
     <>
-        <NavBar currentPage={"home"} />
+        <NavBar currentPage={"servicos"} />
     </>
 );
 };
 
-export default Home;
+export default Servicos;

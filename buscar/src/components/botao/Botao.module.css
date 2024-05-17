@@ -1,11 +1,11 @@
 .botao{
-    padding: 2vh 2vw;
+    padding: 1.5vh 0;
     text-decoration: none;
-    border: 4px solid #3B563C;
+    border: 3px solid #3B563C;
     border-radius: 5vh;
     color: #F1EFE9;
     cursor: pointer;
     font-family: "Product-Sans-bold";
     font-size: 2vh;
-    width: 9vw;
+    width: 8vw;
 }
