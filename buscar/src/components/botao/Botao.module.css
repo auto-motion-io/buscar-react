@@ -9,3 +9,24 @@
     font-size: 2vh;
     width: 8vw;
 }
+
+@media (max-width: 767px){
+    .botao{
+        font-size: 2vh;
+        width: 35vw;
+    }
+}
+
+@media (min-width: 768px){
+    .botao{
+        font-size: 2vh;
+        width: 20vw;
+    }
+}
+
+@media (min-width: 1440px){
+    .botao{
+        font-size: 2vh;
+        width: 10vw;
+    }
+}
