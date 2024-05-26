@@ -39,11 +39,11 @@ body {
   margin-bottom: 20px;
 }
 
-h1 {
+.titulo {
   font-size: 3rem;
 }
 
-p {
+.titulo p {
   margin-bottom: 20px;
   font-size: 1rem;
 }
@@ -59,11 +59,11 @@ p {
   .button {
     padding: 8px 16px;
   }
-  h1 {
+  .titulo {
     text-align: center;
     font-size: 2rem;
   }
-  p {
+  .titulo p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 0.8rem;

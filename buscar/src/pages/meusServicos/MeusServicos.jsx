@@ -8,7 +8,7 @@ const MeusServicos = () => {
     <>
     <div className="app-container">
     <img src={logo} alt="Left" className="side-image left-image" />
-      <h1>Meus Serviços</h1>
+      <h1 className={style["titulo"]}>Meus Serviços</h1>
         <p>Informe o Token que sua oficina forneceu para visualização</p>
         <div className={style["app"]}>
           <div className={style["header"]}>
