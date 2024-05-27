@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL: "https://6653a8801c6af63f46754654.mockapi.io/oficinas"
+    baseURL: "https://pitstop-api.azurewebsites.net"
 });
 
 export default api;
