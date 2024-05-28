@@ -7,6 +7,7 @@ import styles from "./Oficinas.module.css";
 import CardContent from "../../components/cardContent/CardContent";
 import api from "../../api";
 import axios from "axios";
+import Footer from "../../components/footer/Footer";
 
 const Oficinas = () => {
   const [cardsData, setCardsData] = useState([]);
@@ -69,6 +70,7 @@ const Oficinas = () => {
           />
         ))}
       </div>
+      <Footer />
     </>
   );
 };
