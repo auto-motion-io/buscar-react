@@ -1,0 +1,27 @@
+.container{
+    height: 6.5vh;
+    width: fit-content;
+    padding: 0 1.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 3px solid #3B563C;
+    gap: 1vw;
+    border-radius: 4.7vh;
+}
+
+.container p{
+    font-size: 2vh;
+    margin: 0;
+    padding: 0;
+}
+
+.box-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box-img img{
+    width: 1.3vw;
+}
