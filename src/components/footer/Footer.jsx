@@ -16,17 +16,21 @@ const Footer = () => {
     return (
         <footer>
             <div className={styles["background"]}>
-                <img className={styles["img1"]} src={chaveVerde} alt="Imagem do Footer" />
-                <img className={styles["img2"]} src={chaveLaranja} alt="Imagem do Footer" />
+                <div className={styles["img1"]}>
+                    <img src={chaveVerde} alt="Imagem do Footer" />
+                </div>
+                <div className={styles["img2"]}>
+                    <img src={chaveLaranja} alt="Imagem do Footer" />
+                </div>
             </div>
             <div className={styles["container"]}>
                 <div className={styles["content"]}>
                     <div className={styles["box-img"]}>
-                        <img src={logoBuscar} alt="" />
+                        <img onClick={() => mudarPagina("/home")} src={logoBuscar} alt="" />
                     </div>
                     <div className={styles["separador"]}></div>
-                    <div id="img1" className={styles["box-img"]}>
-                        <img className={styles["motion"]} src={logoMotion} alt="" />
+                    <div className={styles["box-img"]}>
+                        <img onClick={() => window.open("https://www.youtube.com")} src={logoMotion} alt=""/>
                     </div>
                 </div>
             </div>
