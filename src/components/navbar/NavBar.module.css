@@ -45,6 +45,7 @@ span.active {
     align-items: center;
     justify-content: space-between;
     width: 16.5vw;
+    gap: 0.9vw;
 }
 
 .logo{
