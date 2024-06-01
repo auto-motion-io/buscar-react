@@ -4,7 +4,7 @@ import local from "../../utils/assets/localizacao.svg";
 import wppIcon from "../../utils/assets/wppIcon.svg";
 import estrela from "../../utils/assets/estrela.svg";
 
-const CardContent = ({ type, titulo, subT, end, tel, nota }) => {
+const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
     const subTRef = useRef(null);
     const containerRef = useRef(null);
     const estrelaRef = useRef(null);
@@ -24,7 +24,7 @@ const CardContent = ({ type, titulo, subT, end, tel, nota }) => {
 
 
     return (
-        <div ref={containerRef} className={styles["container"]}>
+        <div onClick={onclickCard} ref={containerRef} className={styles["container"]}>
             <div className={styles["imagem"]}>
                 <img src="" alt="" />
             </div>

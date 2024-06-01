@@ -5,6 +5,7 @@ import Oficinas from "./pages/oficinas/Oficinas";
 import Servicos from "./pages/servicos/Servicos";
 import Pecas from "./pages/pecas/Pecas";
 import MeusServicos from "./pages/meusServicos/MeusServicos";
+import PagOficina from "./pages/pagOficina/PagOficina";
 
 function Rotas() {
     return (
@@ -16,6 +17,7 @@ function Rotas() {
                         <Route path="/servicos" element={<Servicos />} />
                         <Route path="/pecas" element={<Pecas />} />
                         <Route path="/meusServicos" element={<MeusServicos />} />
+                        <Route path="/oficinas/:id" element={<PagOficina />} />
                     </Routes>
             </BrowserRouter>
         </>

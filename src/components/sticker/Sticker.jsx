@@ -6,6 +6,8 @@ import carro from "../../utils/assets/stick-carro.svg"
 import moto from "../../utils/assets/moto.svg"
 import caminhao from "../../utils/assets/caminhao.svg"
 import onibus from "../../utils/assets/onibus.svg"
+import wpp from "../../utils/assets/wppIcon.svg"
+import local from "../../utils/assets/localizacao.svg"
 
 const Sticker = ({ label, type }) => {
     const imageMap = {
@@ -14,8 +16,10 @@ const Sticker = ({ label, type }) => {
         "híbrido": hibrido,
         "carro": carro,
         "moto": moto,
-        "caminhao": caminhao,
-        "onibus": onibus
+        "caminhão": caminhao,
+        "ônibus": onibus,
+        "local": local,
+        "wpp": wpp
     };
 
     const srcImagem = imageMap[type] || null;

@@ -19,6 +19,10 @@ body{
     overflow-x: hidden;
 }
 
+body img{
+    user-select: none;
+}
+
 /* verde: #3B563C */
 
 

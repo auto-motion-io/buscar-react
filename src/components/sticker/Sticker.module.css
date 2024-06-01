@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 3px solid #3B563C;
+    border: 2.5px solid #3B563C;
     gap: 1vw;
     border-radius: 4.7vh;
 }
