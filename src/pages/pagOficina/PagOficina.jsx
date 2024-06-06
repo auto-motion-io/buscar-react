@@ -10,8 +10,8 @@ import checkCinza from "../../utils/assets/check-cinza.svg";
 import check from "../../utils/assets/check.svg";
 import NavBar from "../../components/navbar/NavBar";
 import Footer from "../../components/footer/Footer";
-import api from "../../api";
-import axios from "axios"; // Importar Axios
+import { api1, api2 } from "../../api";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 const PagOficina = () => {
@@ -19,6 +19,7 @@ const PagOficina = () => {
   const navigate = useNavigate(); // Hook para navegação
   const [nomeOficina, setNomeOficina] = useState("");
   const [nota, setNota] = useState("");
+  const [qtdAvaliacoes, setQtdAvaliacoes] = useState("");
   const [veiculosTrabalha, setVeiculosTrabalha] = useState([]);
   const [propulsaoTrabalha, setPropulsaoTrabalha] = useState([]);
   const [endereco, setEndereco] = useState("");
@@ -41,8 +42,10 @@ const PagOficina = () => {
 
     async function getOficinaDetails() {
       try {
-        const response = await api.get(`/oficinas/${id}`);
+        const response = await api1.get(`/oficinas/${id}`);
         const data = response.data;
+        const avaliacao = await api2.get(`/avaliacoes/media-notas-oficina/${id}`)
+        const avaliacaoOficina = avaliacao.data
 
         // Verifica se os dados da oficina foram obtidos com sucesso
         if (!data) {
@@ -60,7 +63,8 @@ const PagOficina = () => {
         }
 
         setNomeOficina(data.nome);
-        setNota(data.informacoesOficina.horarioFimSem);
+        setNota(parseFloat(avaliacaoOficina.nota).toFixed(1));
+        setQtdAvaliacoes(avaliacaoOficina.quantidadeAvaliacoes)
         setVeiculosTrabalha(data.informacoesOficina.tipoVeiculosTrabalha.split(";"));
         setPropulsaoTrabalha(data.informacoesOficina.tipoPropulsaoTrabalha.split(";"));
         setTelefone(data.informacoesOficina.whatsapp);
@@ -126,6 +130,7 @@ const PagOficina = () => {
           <div className={styles["avaliacao"]}>
             <img src={estrela} alt="estrela das avaliações" />
             <p>{nota}</p>
+            <p>{`(${qtdAvaliacoes} avaliações)`}</p>
           </div>
           <div className={styles["all-stickers"]}>
             <div className={styles["stickers"]}>

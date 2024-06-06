@@ -1,7 +1,11 @@
 import axios from "axios"
 
-const api = axios.create({
+const api1 = axios.create({
     baseURL: "https://pitstop-api.azurewebsites.net"
 });
 
-export default api;
+const api2 = axios.create({
+    baseURL: "https://buscar-api.azurewebsites.net"
+});
+
+export { api1, api2 };
