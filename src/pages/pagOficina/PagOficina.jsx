@@ -24,8 +24,8 @@ const PagOficina = () => {
   const [propulsaoTrabalha, setPropulsaoTrabalha] = useState([]);
   const [endereco, setEndereco] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [inicioTrabalho, setInicioTrabalho] = useState("");
-  const [fimTrabalho, setFimTrabalho] = useState("");
+  const [inicioTrabalho, setInicioTrabalho] = useState([]);
+  const [fimTrabalho, setFimTrabalho] = useState([]);
   const [imagem, setImagem] = useState("");
   const [diasTrabalha, setDiasTrabalha] = useState([]);
   const [hasBuscar, setHasBuscar] = useState(false); // Estado para armazenar o valor de hasBuscar
@@ -67,9 +67,9 @@ const PagOficina = () => {
         setQtdAvaliacoes(avaliacaoOficina.quantidadeAvaliacoes)
         setVeiculosTrabalha(data.informacoesOficina.tipoVeiculosTrabalha.split(";"));
         setPropulsaoTrabalha(data.informacoesOficina.tipoPropulsaoTrabalha.split(";"));
-        setTelefone(data.informacoesOficina.whatsapp);
-        setInicioTrabalho(data.informacoesOficina.horarioIniSem);
-        setFimTrabalho(data.informacoesOficina.horarioFimSem);
+        setTelefone(data.informacoesOficina.whatsapp || "N/A");
+        setInicioTrabalho(data.informacoesOficina.horarioIniSem.split(":"));
+        setFimTrabalho(data.informacoesOficina.horarioFimSem.split(":"));
         setImagem(data.logoUrl);
 
         // Converte os valores do array diasSemanaAberto para valores booleanos
@@ -161,7 +161,7 @@ const PagOficina = () => {
               <div className={styles["img-box"]}>
                 <img src={relogioCinza} alt="" />
               </div>
-              <p>{`${inicioTrabalho}H00 às ${fimTrabalho}H00`}</p>
+              <p>{`${inicioTrabalho[0]}:${inicioTrabalho[1]} às ${fimTrabalho[0]}:${fimTrabalho[1]}`}</p>
             </div>
             <div style={{ alignItems: "start" }} className={styles["campo"]}>
               <div className={styles["img-box"]}>
