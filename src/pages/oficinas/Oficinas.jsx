@@ -81,7 +81,7 @@ const Oficinas = () => {
               type={"Oficina"}
               titulo={data.nome}
               end={data.logradouro + ", " + data.numero}
-              tel={data.informacoesOficina.whatsapp}
+              tel={data.informacoesOficina.whatsapp || "N/A"}
               nota={data.nota}
               onclickCard={() => handleCard(data.id)}
             />

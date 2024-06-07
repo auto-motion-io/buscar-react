@@ -30,7 +30,7 @@ const Footer = () => {
                     </div>
                     <div className={styles["separador"]}></div>
                     <div className={styles["box-img"]}>
-                        <img onClick={() => window.open("https://www.youtube.com")} src={logoMotion} alt=""/>
+                        <img onClick={() => window.open("https://yellow-tree-0826b6c0f.5.azurestaticapps.net/")} src={logoMotion} alt=""/>
                     </div>
                 </div>
             </div>
