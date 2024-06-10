@@ -10,7 +10,7 @@
 }
 
 
-input{
+.container-input input{
     border-radius: 30vh;
     border: none;
     padding: 0.7vh 2vw 0.7vh 3vw;

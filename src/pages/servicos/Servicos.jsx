@@ -70,7 +70,7 @@ const Servicos = () => {
   );
 
   return (
-    <>
+    <main>
       <NavBar currentPage={"servicos"} />
       <PageStart pagina={"Serviços"} filtro={filtros} />
       <div className={styles["content"]}>
@@ -89,7 +89,7 @@ const Servicos = () => {
           ))}
       </div>
       <Footer />
-    </>
+    </main>
   );
 };
 

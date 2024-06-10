@@ -105,6 +105,10 @@ const PagOficina = () => {
     return str.toLowerCase().replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
   };
 
+  function limparTelefone(telefone){
+    return telefone.replace(/\D/g, '');
+  }
+
   if (loading) {
     return <div>Loading...</div>; // Renderiza um indicador de carregamento enquanto os dados estão sendo obtidos
   }
@@ -121,8 +125,8 @@ const PagOficina = () => {
           <h1>{nomeOficina}</h1>
         </div>
         <div className={styles["redirecionadores"]}>
-          <Sticker label={"Google Maps"} type={"local"} />
-          <Sticker label={"WhatsApp"} type={"wpp"} />
+          <Sticker label={"Google Maps"} type={"local"} onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${endereco}`)}/>
+          <Sticker label={"WhatsApp"} type={"wpp"} onClick={() => window.open(`https://wa.me/${limparTelefone(telefone)}/`)}/>
         </div>
       </div>
       <div className={styles["informacoes"]}>

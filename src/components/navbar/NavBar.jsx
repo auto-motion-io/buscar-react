@@ -27,7 +27,7 @@ const NavBar = ({currentPage}) => {
   return (
     <nav>
         <div className={styles["logo"]}>
-            <img src={logo} alt="Logo"/>
+            <img src={logo} alt="Logo" onClick={() => navigate("/home")}/>
         </div>
         <div className={styles["menu"]}>
             <span onClick={() => mudarPagina("/home")} className={pageClasses.home}>
@@ -52,8 +52,8 @@ const NavBar = ({currentPage}) => {
             </span>
         </div>
         <div className={styles["botoes"]}>
-            <Botao texto={"Cadastrar"} cor={"#3B563C"}/>
-            <Botao texto={"Entrar"} cor={"#F4F2ED"} corFont={"#3B563C"}/>
+            <Botao texto={"Cadastrar"} cor={"#3B563C"} onClick={() => navigate("/cadastro")}/>
+            <Botao texto={"Entrar"} cor={"#F4F2ED"} corFont={"#3B563C"} onClick={() => navigate("/login")}/>
         </div>
     </nav> 
     );

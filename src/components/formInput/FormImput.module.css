@@ -1,0 +1,17 @@
+.container-input{
+    display: flex;
+    gap: 1.2vh;
+    flex-direction: column;
+}
+.container-input input{
+    border-radius: 5vh;
+    padding: 0 1vw;
+    outline: none;
+    border: none;
+    background-color: #F8F7F4;
+}
+
+.container-input label{
+    font-size: 2vh;
+    margin-left: 1vh;
+}
