@@ -148,7 +148,7 @@ const PagOficina = () => {
         </div>
         <div className={styles["redirecionadores"]}>
           <Sticker label={"Google Maps"} type={"local"} onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${endereco}`)} />
-          <Sticker label={"WhatsApp"} type={"wpp"} onClick={() => window.open(`https://wa.me/${limparTelefone(telefone)}/`)} />
+          <Sticker label={"WhatsApp"} type={"wpp"} onClick={() => window.open(`https://wa.me/+55${limparTelefone(telefone)}/`)} />
         </div>
       </div>
       <div className={styles["informacoes"]}>
