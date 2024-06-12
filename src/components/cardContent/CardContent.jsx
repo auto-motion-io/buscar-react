@@ -9,6 +9,8 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
     const containerRef = useRef(null);
     const estrelaRef = useRef(null);
     const precoRef = useRef(null)
+    const infosRef = useRef(null)
+    const avaliacaoRef = useRef(null)
 
     useEffect(() => {
         if (type === "Peca") {
@@ -19,6 +21,16 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
         } else if (type === "Oficina") {
             subTRef.current.style.display = "none";
             containerRef.current.style.height = "50vh";
+        } else if (type === "miniServico"){
+            infosRef.current.style.display = "none"
+            containerRef.current.style.height = "38vh"
+            avaliacaoRef.current.style.display = "none"
+            containerRef.current.style.gap = "2vh"
+        } else if (type === "miniPeca"){
+            infosRef.current.style.display = "none"
+            containerRef.current.style.height = "38vh"
+            avaliacaoRef.current.style.display = "none"
+            containerRef.current.style.gap = "2vh"
         }
     }, [type]);
 
@@ -30,12 +42,12 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
             </div>
             <div className={styles["title"]}>
                 <h3 className={styles["titulo-style"]}>{titulo}</h3>
-                <div className={styles["avaliacao"]}>
+                <div ref={avaliacaoRef} className={styles["avaliacao"]}>
                     <img ref={estrelaRef} src={estrela} alt="" />
                     <p ref={precoRef}>{nota}</p>
                 </div>
             </div>
-            <div className={styles["infos"]}>
+            <div ref={infosRef} className={styles["infos"]}>
                 <div ref={subTRef} className={styles["subT"]}>
                     <p>{subT}</p>
                 </div>

@@ -7,6 +7,7 @@ import imgServicos from "../../utils/assets/ferramenta.svg";
 import imgMeusServicos from "../../utils/assets/file.svg"
 import logo from "../../utils/assets/logo.svg";
 import Botao from "../botao/Botao";
+import imgPerfil from "../../utils/assets/perfil.svg"
 import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ currentPage }) => {
@@ -27,7 +28,7 @@ const NavBar = ({ currentPage }) => {
         meusServicos: currentPage === "meusServicos" ? styles.active : "",
     };
 
-    useEffect(() =>{
+    useEffect(() => {
         setLogado(sessionStorage.getItem("logged"))
         setNome(sessionStorage.getItem("nome"))
     }, [])
@@ -35,10 +36,10 @@ const NavBar = ({ currentPage }) => {
     return (
         <nav>
             <div className={styles["logo"]}>
-                <img src={logo} alt="Logo" onClick={() => navigate("/home")} />
+                <img src={logo} alt="Logo" onClick={() => navigate("/")} />
             </div>
             <div className={styles["menu"]}>
-                <span onClick={() => mudarPagina("/home")} className={pageClasses.home}>
+                <span onClick={() => mudarPagina("/")} className={pageClasses.home}>
                     <img src={imgHome} alt="Home" />
                     <p>Home</p>
                 </span>
@@ -54,10 +55,17 @@ const NavBar = ({ currentPage }) => {
                     <img src={imgPecas} alt="Peças" />
                     <p>Peças</p>
                 </span>
-                <span onClick={() => mudarPagina("/meusServicos")} className={pageClasses.meusServicos}>
-                    <img src={imgMeusServicos} alt="Meus Serviços" />
-                    <p>Meus Serviços</p>
-                </span>
+                {logado ? (
+                    <span onClick={() => mudarPagina("/perfil")} className={pageClasses.meusServicos}>
+                        <img src={imgPerfil} alt="Perfil" />
+                        <p>Meu Perfil</p>
+                    </span>
+                ) : (
+                    <span onClick={() => mudarPagina("/meusServicos")} className={pageClasses.meusServicos}>
+                        <img src={imgMeusServicos} alt="Meus Serviços" />
+                        <p>Meus Serviços</p>
+                    </span>
+                )}
             </div>
             {logado ? (
                 <div className={styles["perfil"]}>

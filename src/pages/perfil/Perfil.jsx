@@ -11,6 +11,8 @@ import disquete from "../../utils/assets/disquete.svg";
 import { api2 } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Botao from "../../components/botao/Botao";
+import Loader from "../../components/loader/Loader";
 
 const Perfil = () => {
 
@@ -21,9 +23,15 @@ const Perfil = () => {
     const [nome, setNome] = useState("");
     const [sobrenome, setSobrenome] = useState("");
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+    const [senhaAtual, setSenhaAtual] = useState("");
+    const [novaSenha, setNovaSenha] = useState("");
+    const [confSenha, setConfSenha] = useState("");
+    const [mudandoSenha, setMudandoSenha] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const saveButtonRef = useRef(null);
+    const backModalRef = useRef(null);
 
     const config = {
         headers: {
@@ -34,17 +42,36 @@ const Perfil = () => {
         nome: nome,
         sobrenome: sobrenome,
         email: email,
-        senha: senha
     }
 
-    async function saveChanges(){
+    async function saveChanges() {
         api2.put(`/usuarios/${idUser}`, data, config)
-        .then((response) =>{
-            toast.success("Modificações salvas!")
+            .then((response) => {
+                toast.success("Modificações salvas!")
+                sessionStorage.setItem("nome", response.data.nome)
+                setTimeout(() =>{
+                    window.location.reload()
+                },2000)
+            }).catch((e) => {
+                console.log("Erro" + e)
+                toast.error("Erro!")
+            })
+    }
+
+    async function changePassword(){
+        setIsLoading(true);
+        api2.put(`/usuarios/atualizar-senha/${idUser}`,{
+            senhaAntiga: senhaAtual,
+            senhaNova: novaSenha
+        }, config).then(() =>{
+            changeModal()
+            toast.success("Senha alterada com sucesso")
+            sessionStorage.clear()
             navigate("/login")
         }).catch((e) =>{
-            console.log("Erro" + e)
-            toast.error("Erro!")
+            console.log("Erro" +e)
+            toast.error("Erro ao mudar senha")
+            setIsLoading(false);
         })
     }
 
@@ -55,7 +82,6 @@ const Perfil = () => {
                 setNome(response.data.nome);
                 setSobrenome(response.data.sobrenome);
                 setEmail(response.data.email);
-                setSenha(response.data.senha);
             } catch (e) {
                 console.log("Erro: " + e);
                 toast.error("Erro ao carregar os dados");
@@ -63,18 +89,75 @@ const Perfil = () => {
         };
 
         getDados();
-    }, [idUser]); // Chamar apenas uma vez quando o componente é montado
+    }, [idUser]);
 
     useEffect(() => {
         if (editing && saveButtonRef.current) {
             saveButtonRef.current.style.display = "flex";
-        } else if (saveButtonRef.current) {
+        } else if (!editing) {
             saveButtonRef.current.style.display = "none";
         }
-    }, [editing]); // Apenas escutar mudanças em `editing`
+    }, [editing]);
+
+    function changeModal() {
+        setMudandoSenha(!mudandoSenha)
+        if (mudandoSenha) {
+            backModalRef.current.style.display = "none"
+        }
+        else {
+            backModalRef.current.style.display = "flex"
+        }
+    }
 
     return (
         <>
+            <div ref={backModalRef} className={styles["back-modal"]}>
+                <div className={styles["modal-senha"]}>
+                    <div className={styles["form-senha"]}>
+                        <FormInput
+                            backgroundColor={"#eceae59e"}
+                            label={"Senha atual*"}
+                            width={"11vw"}
+                            id={"inp_senhaAtual"}
+                            onChange={(e) => setSenhaAtual(e.target.value)}
+                            value={senhaAtual}
+                            type={"password"}
+                        />
+                        <FormInput
+                            backgroundColor={"#eceae59e"}
+                            label={"Nova senha*"}
+                            width={"11vw"}
+                            id={"inp_novaSenha"}
+                            onChange={(e) => setNovaSenha(e.target.value)}
+                            value={novaSenha}
+                            type={"password"}
+                        />
+                        <FormInput
+                            backgroundColor={"#eceae59e"}
+                            label={"Confirmar senha*"}
+                            width={"11vw"}
+                            id={"inp_confSenha"}
+                            onChange={(e) => setConfSenha(e.target.value)}
+                            value={confSenha}
+                            type={"password"}
+                        />
+                    </div>
+                    <div className={styles["botoes"]}>
+                        <Botao
+                            texto={"Cancelar"}
+                            width={"9vw"}
+                            onClick={changeModal}
+                            cor={"transparent"}
+                            corFont={"#3B563C"}
+                        />
+                        <Botao
+                            texto={"Salvar"}
+                            width={"9vw"}
+                            onClick={changePassword}
+                        />
+                    </div>
+                </div>
+            </div>
             <NavBar currentPage={"meusServicos"} />
             <section className={styles.content}>
                 <div className={styles["left-side"]}>
@@ -93,7 +176,7 @@ const Perfil = () => {
                     </div>
                 </div>
                 <div className={styles["right-side"]}>
-                    <span onClick={() => setEditing(true)} className={styles.lapis}>
+                    <span onClick={() => setEditing(!editing)} className={styles.lapis}>
                         <img src={lapis} alt="" />
                     </span>
                     <div className={styles.perfilGerente}>
@@ -107,7 +190,7 @@ const Perfil = () => {
                             id={"inp_nome"}
                             onChange={(e) => setNome(e.target.value)}
                             value={nome}
-                            readOnly={!editing} // Definir readOnly baseado no estado editing
+                            readOnly={!editing}
                         />
                         <FormInput
                             backgroundColor={"#eceae59e"}
@@ -116,7 +199,7 @@ const Perfil = () => {
                             id={"inp_sobrenome"}
                             onChange={(e) => setSobrenome(e.target.value)}
                             value={sobrenome}
-                            readOnly={!editing} // Definir readOnly baseado no estado editing
+                            readOnly={!editing}
                         />
                         <FormInput
                             backgroundColor={"#eceae59e"}
@@ -125,19 +208,16 @@ const Perfil = () => {
                             id={"inp_email"}
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
-                            readOnly={!editing} // Definir readOnly baseado no estado editing
+                            readOnly={!editing}
                         />
-                        <FormInput
-                            backgroundColor={"#eceae59e"}
-                            label={"Senha"}
-                            width={"17vw"}
-                            id={"inp_senha"}
-                            onChange={(e) => setSenha(e.target.value)}
-                            type="password"
-                            value={senha}
-                            readOnly={!editing} // Definir readOnly baseado no estado editing
+                    </div>
+                    <div className={styles["botoes"]}>
+                        <Botao
+                            texto={"Alterar Senha"}
+                            width={"10vw"}
+                            onClick={changeModal}
                         />
-                        <div ref={saveButtonRef} className={styles.save} onClick={() => {saveChanges()}}>
+                        <div ref={saveButtonRef} className={styles.save} onClick={() => { saveChanges() }}>
                             <img src={disquete} alt="" />
                         </div>
                     </div>

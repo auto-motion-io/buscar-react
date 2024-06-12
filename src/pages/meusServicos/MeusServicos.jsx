@@ -28,12 +28,12 @@ const MeusServicos = () => {
             <FormInput label={"Token*"} width={"20vw"} id={"inp_token"} onChange={(e) => setToken(e.target.value)} value={token} />
           </div>
           <div className={styles["botoes"]}>
-            <Botao texto={"Voltar"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"8vw"} onClick={() => navigate("/home")} />
+            <Botao texto={"Voltar"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"8vw"} onClick={() => navigate("/")} />
             <Botao texto={"Acessar"} width={"8vw"} />
           </div>
         </div>
         <div className={styles["logo"]}>
-          <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/home")} style={{ cursor: "pointer" }} />
+          <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/")} style={{ cursor: "pointer" }} />
         </div>
         <div className={styles["background-img"]}>
           <img src={imagemFundo} alt="Imagem fundo" />

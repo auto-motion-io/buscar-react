@@ -26,7 +26,7 @@ const Footer = () => {
             <div className={styles["container"]}>
                 <div className={styles["content"]}>
                     <div className={styles["box-img"]}>
-                        <img onClick={() => mudarPagina("/home")} src={logoBuscar} alt="" />
+                        <img onClick={() => mudarPagina("/")} src={logoBuscar} alt="" />
                     </div>
                     <div className={styles["separador"]}></div>
                     <div className={styles["box-img"]}>

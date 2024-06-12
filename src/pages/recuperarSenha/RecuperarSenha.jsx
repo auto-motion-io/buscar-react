@@ -95,7 +95,7 @@ const RecuperarSenha = () => {
                     </div>
                 </div>
                 <div className={styles["logo"]}>
-                    <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/home")} style={{ cursor: "pointer" }} />
+                    <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/")} style={{ cursor: "pointer" }} />
                 </div>
                 <div className={styles["background-img"]}>
                     <img src={imagemFundo} alt="Imagem fundo" />

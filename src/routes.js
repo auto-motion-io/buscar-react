@@ -20,7 +20,7 @@ function Rotas() {
                     <Route path="/recuperarSenha" element={<RecuperarSenha />} />
                     <Route path="/cadastro" element={<Cadastro />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/oficinas" element={<Oficinas />} />
                     <Route path="/servicos" element={<Servicos />} />
                     <Route path="/pecas" element={<Pecas />} />

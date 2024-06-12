@@ -45,7 +45,7 @@ const Cadastro = () => {
             </div>
             <div className={styles["right-side"]}>
                 <div className={styles["container"]}>
-                    <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/home")} />
+                    <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/")} />
                     <div className={styles["form"]}>
                         <FormInput label={"Nome*"} width={"10vw"} id={"inp_nome"} onChange={(e) => setNome(e.target.value)} />
                         <FormInput label={"Sobrenome*"} width={"10vw"} id={"inp_sobrenome"} onChange={(e) => setSobrenome(e.target.value)} />

@@ -13,6 +13,11 @@ import Footer from "../../components/footer/Footer";
 import { api1, api2 } from "../../api";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
+import CardContent from "../../components/cardContent/CardContent";
+import leftArrow from "../../utils/assets/leftArrow.svg"
+import rightArrow from "../../utils/assets/rightArrow.svg"
 
 const PagOficina = () => {
   const { id } = useParams();
@@ -30,6 +35,23 @@ const PagOficina = () => {
   const [diasTrabalha, setDiasTrabalha] = useState([]);
   const [hasBuscar, setHasBuscar] = useState(false); // Estado para armazenar o valor de hasBuscar
   const [loading, setLoading] = useState(true); // Estado para indicar se os dados estão sendo carregados
+
+  const responsive = {
+    0: { items: 1},
+    568: { items: 3},
+    1024: { items: 4},
+  };
+
+  // type, titulo, subT, end, tel, nota, onclickCard
+  const items = [
+    <CardContent type={"miniPeca"} titulo={"Fast Motos"} subT={"R$500"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
+  ];
 
   useEffect(() => {
     // Verifica se o id é um número válido
@@ -105,7 +127,7 @@ const PagOficina = () => {
     return str.toLowerCase().replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
   };
 
-  function limparTelefone(telefone){
+  function limparTelefone(telefone) {
     return telefone.replace(/\D/g, '');
   }
 
@@ -125,8 +147,8 @@ const PagOficina = () => {
           <h1>{nomeOficina}</h1>
         </div>
         <div className={styles["redirecionadores"]}>
-          <Sticker label={"Google Maps"} type={"local"} onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${endereco}`)}/>
-          <Sticker label={"WhatsApp"} type={"wpp"} onClick={() => window.open(`https://wa.me/${limparTelefone(telefone)}/`)}/>
+          <Sticker label={"Google Maps"} type={"local"} onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${endereco}`)} />
+          <Sticker label={"WhatsApp"} type={"wpp"} onClick={() => window.open(`https://wa.me/${limparTelefone(telefone)}/`)} />
         </div>
       </div>
       <div className={styles["informacoes"]}>
@@ -187,6 +209,23 @@ const PagOficina = () => {
             <img src="" alt="Imagem da Oficina" />
           </div>
         </div>
+      </div>
+      <div className={styles["teste"]}>
+        <AliceCarousel
+          mouseTracking
+          items={items}
+          responsive={responsive}
+          infinite={true}
+          disableDotsControls={true}
+          autoPlay={true}
+          autoPlayInterval={2000}
+          renderPrevButton={() => {
+            return <div className={`${styles.arrows}`}><img src={leftArrow}/></div>;
+          }}
+          renderNextButton={() => {
+            return <div style={{rotate:"180deg"}} className={`${styles.arrows}`}><img src={leftArrow}/></div>;
+          }}
+        />
       </div>
       <Footer />
     </main>

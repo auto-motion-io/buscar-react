@@ -24,7 +24,7 @@ const Login = () => {
             senha: senha
         }).then((response) => {
             toast.success("Login realizado com sucesso!");
-            navigate("/home")
+            navigate("/")
             sessionStorage.setItem("logged", true)
             sessionStorage.setItem("nome", response.data.nome)
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
@@ -42,7 +42,7 @@ const Login = () => {
             <div className={styles["content"]}>
                 <div className={styles["left-side"]}>
                     <div className={styles["container"]}>
-                        <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/home")} />
+                        <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/")} />
                         <div className={styles["form"]}>
                             <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => setEmail(e.target.value)} />
                             <FormInput label={"Senha*"} width={"20vw"} id={"inp_senha"} onChange={(e) => setSenha(e.target.value)} type="password" />

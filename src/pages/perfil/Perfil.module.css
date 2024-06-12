@@ -61,7 +61,7 @@
     align-items: center;
     justify-content: start;
     flex-direction: column;
-    gap: 3vw;
+    gap: 2vw;
 }
 
 .perfilGerente{
@@ -103,4 +103,42 @@
 }
 .save img{
     height: 2.5vh;
+}
+
+.back-modal{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(33, 32, 32, 0.584);
+    z-index: 999;
+
+}
+
+.modal-senha{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2vw;
+    padding: 2vw;
+    background-color: rgb(204, 202, 202);
+    border-radius: 3vh;
+}
+
+.form-senha{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.7vw;
+}
+
+.botoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
 }
