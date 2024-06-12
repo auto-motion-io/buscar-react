@@ -1,23 +1,45 @@
-import React from "react";
-import FormToken from "../../components/formToken/FormToken";
-import style from "./MeusServicos.module.css";
-import logo from "../../utils/assets/logo.svg";
+import React, { useState } from "react";
+import styles from "./MeusServicos.module.css"
+import FormInput from "../../components/formInput/FormImput";
+import logoBuscar from "../../utils/assets/logo.svg"
+import Botao from "../../components/botao/Botao";
+import imagemFundo from "../../utils/assets/img-login.svg"
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { api2 } from "../../api";
+import Loader from "../../components/loader/Loader";
 
 const MeusServicos = () => {
+
+  const navigate = useNavigate();
+
+  const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
+
+
   return (
     <>
-    <div className="app-container">
-    <img src={logo} alt="Left" className="side-image left-image" />
-      <h1 className={style["titulo"]}>Meus Serviços</h1>
+      <Loader show={isLoading} />
+      <div className={styles["content"]}>
+        <h1>Meus Serviços</h1>
         <p>Informe o Token que sua oficina forneceu para visualização</p>
-        <div className={style["app"]}>
-          <div className={style["header"]}>
+        <div className={styles["container"]}>
+          <div className={styles["form"]}>
+            <FormInput label={"Token*"} width={"20vw"} id={"inp_token"} onChange={(e) => setToken(e.target.value)} value={token} />
           </div>
-          <FormToken />
+          <div className={styles["botoes"]}>
+            <Botao texto={"Voltar"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"8vw"} onClick={() => navigate("/home")} />
+            <Botao texto={"Acessar"} width={"8vw"} />
+          </div>
         </div>
+        <div className={styles["logo"]}>
+          <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/home")} style={{ cursor: "pointer" }} />
         </div>
+        <div className={styles["background-img"]}>
+          <img src={imagemFundo} alt="Imagem fundo" />
+        </div>
+      </div>
     </>
-);
-};
-
+  )
+}
 export default MeusServicos;

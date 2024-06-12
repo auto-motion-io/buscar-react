@@ -8,7 +8,7 @@
     src: url("../utils/fonts/Product\ Sans\ Bold.ttf") format("truetype");
 }
 
-body{
+body {
     margin: 0;
     padding: 0;
     font-size: 1rem;
@@ -17,12 +17,15 @@ body{
     font-family: "Product-Sans-bold", sans-serif;
     background-color: #f8f7f4;
     overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 100vh;
 }
 
-body img{
+body img {
     user-select: none;
 }
 
 /* verde: #3B563C */
-
-

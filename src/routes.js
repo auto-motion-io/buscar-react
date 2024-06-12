@@ -9,14 +9,14 @@ import PagOficina from "./pages/pagOficina/PagOficina";
 import Login from "./pages/login/Login";
 import Cadastro from "./pages/cadastro/Cadastro";
 import RecuperarSenha from "./pages/recuperarSenha/RecuperarSenha";
-import RedefinirSenha from "./pages/recuperarSenha/RedefinirSenha";
+import Perfil from "./pages/perfil/Perfil";
 
 function Rotas() {
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/redefinirSenha" element={<RedefinirSenha />} />
+                    <Route path="/perfil" element={<Perfil />} />
                     <Route path="/recuperarSenha" element={<RecuperarSenha />} />
                     <Route path="/cadastro" element={<Cadastro />} />
                     <Route path="/login" element={<Login />} />

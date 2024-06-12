@@ -1,9 +1,11 @@
-.container-input{
+/* FormImput.module.css */
+.container-input {
     display: flex;
     gap: 1.2vh;
     flex-direction: column;
 }
-.container-input input{
+
+.container-input input {
     border-radius: 5vh;
     padding: 0 1vw;
     outline: none;
@@ -11,7 +13,13 @@
     background-color: #F8F7F4;
 }
 
-.container-input label{
+.container-input label {
     font-size: 2vh;
     margin-left: 1vh;
+}
+
+.container-input input[readonly] {
+    background-color: #f0f0f0; /* Cor de fundo para campos readOnly */
+    color: #a9a9a9; /* Cor do texto para campos readOnly */
+    cursor: not-allowed; /* Cursor para indicar que está desabilitado */
 }

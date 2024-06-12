@@ -14,16 +14,23 @@ const RecuperarSenha = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
+    const [novaSenha, setNovaSenha] = useState("");
+    const [confSenha, setConfSenha] = useState("");
+    const [token, setToken] = useState("");
     const [isLoading, setIsLoading] = useState(false)
+
+    const [next, setNext] = useState(false);
 
 
     async function handleEnviar() {
         setIsLoading(true)
-        api2.post(`/usuarios/recuperar-senha?email=${email}`)
-            .then((response) => {
-                toast.success("Um email foi enviado para que sua redefinição seja feita!");
-                localStorage.setItem("idUser", response.data.idUsuario);
-                navigate("/login")
+        api2.post(`/usuarios/set-token?op=senha`, {
+            email: email.toLowerCase(),
+        })
+            .then(() => {
+                toast.success("Insira o token que foi enviado no email inserido!");
+                setNext(true)
+                setIsLoading(false)
             }).catch((e) => {
                 console.log("Erro ao enviar email: " + e)
                 toast.error("Email não encontrado no sistema!")
@@ -31,20 +38,64 @@ const RecuperarSenha = () => {
             })
     }
 
+    async function handleRedefinir() {
+        if (confSenha === novaSenha) {
+            setIsLoading(true)
+            api2.post(`/usuarios/confirmar-token?op=senha`, {
+                email: email.toLowerCase(),
+                senha: novaSenha,
+                token: token
+            }).then(() => {
+                toast.success("Senha alterada com sucesso!");
+                navigate("/login")
+            }).catch((e) => {
+                setIsLoading(false)
+                console.log("Erro ao aletrar senha " + e)
+                toast.error("Token inválido!")
+            })
+        } else {
+            toast.error("Senhas não coincidem")
+        }
+    }
+
     return (
         <>
             <Loader show={isLoading} />
             <div className={styles["content"]}>
                 <h1>Recuperar Senha</h1>
-                <p>Informe seu Email e te enviaremos uma mensagem para recuperação</p>
+                {!next ? (
+                    <p>Informe seu Email e te enviaremos um token para recuperação</p>
+                ) : (
+                    <p>Insira o token que foi enviado para seu email!</p>
+                )}
                 <div className={styles["container"]}>
                     <div className={styles["form"]}>
-                        <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => setEmail(e.target.value)} />
+                        {!next ? (
+                            <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => setEmail(e.target.value)} value={email} />
+                        ) : (
+                            <>
+                                <FormInput label={"Token*"} width={"20vw"} id={"inp_token"} onChange={(e) => setToken(e.target.value)} value={token} />
+                                <FormInput label={"Nova senha*"} width={"20vw"} id={"inp_senha1"} onChange={(e) => setNovaSenha(e.target.value)} type="password" value={novaSenha} />
+                                <FormInput label={"Confirmar senha*"} width={"20vw"} id={"inp_senha2"} onChange={(e) => setConfSenha(e.target.value)} type="password" value={confSenha} />
+                            </>
+                        )}
                     </div>
-                    <Botao texto={"Enviar"} width={"10vw"} onClick={(handleEnviar)} />
+                    <div className={styles["botoes"]}>
+                        {!next ? (
+                            <>
+                                <Botao texto={"Voltar"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"8vw"} onClick={() => navigate("/login")} />
+                                <Botao texto={"Enviar"} width={"8vw"} onClick={(handleEnviar)} />
+                            </>
+                        ) : (
+                            <>
+                                <Botao texto={"Voltar"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"8vw"} onClick={() => setNext(false)} />
+                                <Botao texto={"Redefinir"} width={"8vw"} onClick={(handleRedefinir)} />
+                            </>
+                        )}
+                    </div>
                 </div>
                 <div className={styles["logo"]}>
-                    <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/home")} style={{cursor:"pointer"}}/>
+                    <img src={logoBuscar} alt="Logo Buscar" onClick={() => navigate("/home")} style={{ cursor: "pointer" }} />
                 </div>
                 <div className={styles["background-img"]}>
                     <img src={imagemFundo} alt="Imagem fundo" />

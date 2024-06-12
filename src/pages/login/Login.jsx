@@ -20,13 +20,15 @@ const Login = () => {
     async function handleEntrar() {
         setIsLoading(true)
         api2.post("/usuarios/login", {
-            email: email,
+            email: email.toLowerCase(),
             senha: senha
         }).then((response) => {
             toast.success("Login realizado com sucesso!");
             navigate("/home")
             sessionStorage.setItem("logged", true)
             sessionStorage.setItem("nome", response.data.nome)
+            sessionStorage.setItem("idUsuario", response.data.idUsuario)
+            sessionStorage.setItem("token", window.btoa(response.data.token))
         }).catch((e) => {
             console.log("Erro ao realizar login: " + e)
             toast.error("Erro ao realizar login!")
