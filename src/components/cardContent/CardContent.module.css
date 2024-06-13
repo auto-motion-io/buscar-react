@@ -34,6 +34,14 @@
     justify-content: space-between;
 }
 
+.valor{
+    margin: 0;
+    padding: 0;
+    color: #315C32;
+    font-size: 3.5vh;
+    font-family: "Product-sans";
+}
+
 .titulo-style{
     font-size: 3vh;
     margin: 0;

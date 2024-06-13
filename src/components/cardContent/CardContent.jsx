@@ -4,13 +4,15 @@ import local from "../../utils/assets/localizacao.svg";
 import wppIcon from "../../utils/assets/wppIcon.svg";
 import estrela from "../../utils/assets/estrela.svg";
 
-const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
+const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard, valor }) => {
     const subTRef = useRef(null);
     const containerRef = useRef(null);
     const estrelaRef = useRef(null);
     const precoRef = useRef(null)
     const infosRef = useRef(null)
     const avaliacaoRef = useRef(null)
+    const titleRef = useRef(null)
+    const valorRef = useRef(null)
 
     useEffect(() => {
         if (type === "Peca") {
@@ -26,11 +28,17 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
             containerRef.current.style.height = "38vh"
             avaliacaoRef.current.style.display = "none"
             containerRef.current.style.gap = "2vh"
+            containerRef.current.style.marginBottom = "2vh"
         } else if (type === "miniPeca"){
             infosRef.current.style.display = "none"
-            containerRef.current.style.height = "38vh"
+            containerRef.current.style.height = "45vh"
             avaliacaoRef.current.style.display = "none"
             containerRef.current.style.gap = "2vh"
+            titleRef.current.style.flexDirection = "column"
+            titleRef.current.style.alignItems = "start"
+            titleRef.current.style.gap = "1vh"
+            valorRef.current.style.display = "flex"
+            containerRef.current.style.marginBottom = "2vh"
         }
     }, [type]);
 
@@ -40,8 +48,9 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard }) => {
             <div className={styles["imagem"]}>
                 <img src="" alt="" />
             </div>
-            <div className={styles["title"]}>
+            <div ref={titleRef} className={styles["title"]}>
                 <h3 className={styles["titulo-style"]}>{titulo}</h3>
+                <p className={styles["valor"]} ref={valorRef}>{valor}</p>
                 <div ref={avaliacaoRef} className={styles["avaliacao"]}>
                     <img ref={estrelaRef} src={estrela} alt="" />
                     <p ref={precoRef}>{nota}</p>

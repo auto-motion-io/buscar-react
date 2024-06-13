@@ -16,8 +16,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import CardContent from "../../components/cardContent/CardContent";
-import leftArrow from "../../utils/assets/leftArrow.svg"
-import rightArrow from "../../utils/assets/rightArrow.svg"
+import leftArrow from "../../utils/assets/leftArrow.svg";
 
 const PagOficina = () => {
   const { id } = useParams();
@@ -33,28 +32,19 @@ const PagOficina = () => {
   const [fimTrabalho, setFimTrabalho] = useState([]);
   const [imagem, setImagem] = useState("");
   const [diasTrabalha, setDiasTrabalha] = useState([]);
-  const [hasBuscar, setHasBuscar] = useState(false); // Estado para armazenar o valor de hasBuscar
-  const [loading, setLoading] = useState(true); // Estado para indicar se os dados estão sendo carregados
+  const [hasBuscar, setHasBuscar] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [servicos, setServicos] = useState([]);
+  const [pecas, setPecas] = useState([]);
 
   const responsive = {
-    0: { items: 1},
-    568: { items: 3},
-    1024: { items: 4},
+    0: { items: 1 },
+    568: { items: 3 },
+    1024: { items: 4 },
   };
 
-  // type, titulo, subT, end, tel, nota, onclickCard
-  const items = [
-    <CardContent type={"miniPeca"} titulo={"Fast Motos"} subT={"R$500"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-    <CardContent type={"miniServico"} titulo={"Fast Motos"}/>,
-  ];
 
   useEffect(() => {
-    // Verifica se o id é um número válido
     const isValidId = /^\d+$/.test(id);
 
     if (!isValidId) {
@@ -66,19 +56,16 @@ const PagOficina = () => {
       try {
         const response = await api1.get(`/oficinas/${id}`);
         const data = response.data;
-        const avaliacao = await api2.get(`/avaliacoes/media-notas-oficina/${id}`)
-        const avaliacaoOficina = avaliacao.data
+        const avaliacao = await api2.get(`/avaliacoes/media-notas-oficina/${id}`);
+        const avaliacaoOficina = avaliacao.data;
 
-        // Verifica se os dados da oficina foram obtidos com sucesso
         if (!data) {
           navigate("/servicos");
           return;
         }
 
-        // Verifica se hasBuscar é true
         setHasBuscar(data.hasBuscar);
 
-        // Se hasBuscar for false, redireciona para a página de erro servicos
         if (!data.hasBuscar) {
           navigate("/servicos");
           return;
@@ -86,7 +73,7 @@ const PagOficina = () => {
 
         setNomeOficina(data.nome);
         setNota(parseFloat(avaliacaoOficina.nota).toFixed(1));
-        setQtdAvaliacoes(avaliacaoOficina.quantidadeAvaliacoes)
+        setQtdAvaliacoes(avaliacaoOficina.quantidadeAvaliacoes);
         setVeiculosTrabalha(data.informacoesOficina.tipoVeiculosTrabalha.split(";"));
         setPropulsaoTrabalha(data.informacoesOficina.tipoPropulsaoTrabalha.split(";"));
         setTelefone(data.informacoesOficina.whatsapp || "N/A");
@@ -94,17 +81,17 @@ const PagOficina = () => {
         setFimTrabalho(data.informacoesOficina.horarioFimSem.split(":"));
         setImagem(data.logoUrl);
 
-        // Converte os valores do array diasSemanaAberto para valores booleanos
         const diasAbertos = data.informacoesOficina.diasSemanaAberto.split(";").map(value => value === "true");
         setDiasTrabalha(diasAbertos);
 
-        // Busca o endereço formatado com base no CEP
         buscarEnderecoFormatado(data.cep, data.numero);
+        getServicos();
+        getPecas();
       } catch (error) {
         console.log("Erro ao buscar dados da oficina:", error);
         navigate("/servicos");
       } finally {
-        setLoading(false); // Marca que os dados foram carregados
+        setLoading(false);
       }
     }
 
@@ -120,8 +107,28 @@ const PagOficina = () => {
       }
     }
 
+    async function getServicos() {
+      try {
+        const response = await api1.get(`/buscar-servicos/oficina/${id}`);
+        console.log(response.data)
+        setServicos(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar serviços: ", error);
+      }
+    }
+
+    async function getPecas() {
+      try {
+        const response = await api1.get(`/produtoEstoque/oficina/${id}`);
+        console.log(response.data)
+        setPecas(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar serviços: ", error);
+      }
+    }
+
     getOficinaDetails();
-  }, [id, navigate]); // Adicionando navigate como dependência
+  }, [id, navigate]);
 
   const capitalizeInitials = (str) => {
     return str.toLowerCase().replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
@@ -210,23 +217,48 @@ const PagOficina = () => {
           </div>
         </div>
       </div>
-      <div className={styles["teste"]}>
+      <section className={styles["carrosel"]}>
+        <h2>Serviços</h2>
         <AliceCarousel
           mouseTracking
-          items={items}
+          items={(servicos && servicos.length > 0 ? servicos : []).map((servico, index) => (
+            <CardContent key={index} type={"miniServico"} titulo={servico.nome} />
+          ))}
           responsive={responsive}
           infinite={true}
           disableDotsControls={true}
           autoPlay={true}
           autoPlayInterval={2000}
           renderPrevButton={() => {
-            return <div className={`${styles.arrows}`}><img src={leftArrow}/></div>;
+            return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
           }}
           renderNextButton={() => {
-            return <div style={{rotate:"180deg"}} className={`${styles.arrows}`}><img src={leftArrow}/></div>;
+            return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
           }}
+          autoWidth={true}
         />
-      </div>
+      </section>
+      <section className={styles["carrosel"]}>
+        <h2>Produtos</h2>
+        <AliceCarousel
+          mouseTracking
+          items={(pecas && pecas.length > 0 ? pecas : []).map((peca, index) => (
+            <CardContent key={index} type={"miniPeca"} titulo={peca.nome} valor={`R$${peca.valorVenda}`} />
+          ))}
+          responsive={responsive}
+          infinite={true}
+          disableDotsControls={true}
+          autoPlay={true}
+          autoPlayInterval={2000}
+          renderPrevButton={() => {
+            return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
+          }}
+          renderNextButton={() => {
+            return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
+          }}
+          autoWidth={true}
+        />
+      </section>
       <Footer />
     </main>
   );

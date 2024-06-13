@@ -30,7 +30,7 @@ main{
     display: flex;
     align-items: end;
     justify-content: space-between;
-    margin-bottom: 100vh;
+    margin-bottom: 20vh;
 }
 
 .left-side{
@@ -132,8 +132,17 @@ main{
     gap: 0.8vh;
 }
 
-.teste{
+.carrosel{
     width: 80vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    margin-bottom: 9vh;
+}
+.carrosel h2{
+    font-size: 6vh;
+    margin: 0;
+    padding: 0;
 }
 
 .arrows{
