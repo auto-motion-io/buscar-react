@@ -155,3 +155,72 @@ main{
     cursor: pointer;
     width: min-content;
 }
+
+.avaliacoes{
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 2vw;
+}
+
+.avaliacoes h1{
+    margin: 0;
+    padding: 0;
+    font-size: 6vh;
+}
+
+.avaliacoes .left-side{
+    align-items: start;
+}
+
+.cards-avaliacoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #cdccc935;
+    flex-direction: column;
+    height: 72vh;
+    width: 46vw;
+    border-radius: 5vh;
+    padding-top: 5vh;
+}
+
+.avaliacoes .right-side,
+.avaliacoes .left-side{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+.avaliacoes .right-side{
+    align-items: center;
+    border-radius: 5vh;
+    width: 31vw;
+    height: 72vh;
+    background-color: #cdccc935;
+    gap: 3vh;
+    padding-top: 5vh;
+}
+
+.avaliacoes .right-side p{
+    margin: 0;
+    padding: 0;
+    font-size: 2.2vh;
+}
+
+.estrelas{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 25vw;
+}
+
+.estrelas img{
+    width: 3vw;;
+}
+
+.nota{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+}

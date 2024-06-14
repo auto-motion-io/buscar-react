@@ -17,6 +17,10 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import CardContent from "../../components/cardContent/CardContent";
 import leftArrow from "../../utils/assets/leftArrow.svg";
+import FormImput from "../../components/formInput/FormImput"
+import Botao from "../../components/botao/Botao";
+import estrelaCinza from "../../utils/assets/estrelaCinza.svg"
+import { toast } from "react-toastify";
 
 const PagOficina = () => {
   const { id } = useParams();
@@ -36,13 +40,16 @@ const PagOficina = () => {
   const [loading, setLoading] = useState(true);
   const [servicos, setServicos] = useState([]);
   const [pecas, setPecas] = useState([]);
+  const [userRating, setUserRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [userComentario, setUserComentario] = useState("");
+  const token = atob(sessionStorage.getItem("token"))
 
   const responsive = {
     0: { items: 1 },
     568: { items: 3 },
     1024: { items: 4 },
   };
-
 
   useEffect(() => {
     const isValidId = /^\d+$/.test(id);
@@ -137,6 +144,37 @@ const PagOficina = () => {
   function limparTelefone(telefone) {
     return telefone.replace(/\D/g, '');
   }
+
+  const handleMouseOver = (index) => {
+    setHoverRating(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverRating(0);
+  };
+
+  const handleClick = (index) => {
+    setUserRating(index);
+  };
+
+  async function handleSubmit(){
+    api2.post(`/avaliacoes`,{
+      nota: userRating,
+      comentario: userComentario,
+      fkUsuario: sessionStorage.getItem("idUsuario"),
+      fkOficina: id
+    },{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    }).then(() =>{
+      toast.success("Avaliação enviada com sucesso!")
+    }).catch((e) =>{
+      console.error("Error: " +e)
+      toast.error("Erro ao enviar avaliação, tente novamente")
+    })
+  }
+
 
   if (loading) {
     return <div>Loading...</div>; // Renderiza um indicador de carregamento enquanto os dados estão sendo obtidos
@@ -258,6 +296,32 @@ const PagOficina = () => {
           }}
           autoWidth={true}
         />
+      </section>
+      <section className={styles["avaliacoes"]}>
+        <div className={styles["left-side"]}>
+          <h1>Avaliações</h1>
+          <div className={styles["cards-avaliacoes"]}></div>
+        </div>
+        <div className={styles["right-side"]}>
+          <h1 style={{ width: "25.1vw" }}>Sua Avaliação</h1>
+          <div className={styles["nota"]}>
+            <p>Nota</p>
+            <div className={styles["estrelas"]}>
+              {[1, 2, 3, 4, 5].map((index) => (
+                <img
+                  key={index}
+                  src={index <= (hoverRating || userRating) ? estrela : estrelaCinza}
+                  alt={`Star ${index}`}
+                  onMouseOver={() => handleMouseOver(index)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => handleClick(index)}
+                />
+              ))}
+            </div>
+          </div>
+          <FormImput label={"Comentário"} height="30vh" width={"23vw"} onChange={(e) => setUserComentario(e.target.value)}/>
+          <Botao texto={"Enviar"} width={"9vw"} onClick={handleSubmit} />
+        </div>
       </section>
       <Footer />
     </main>
