@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./Cadastro.module.css"
 import FormInput from "../../components/formInput/FormImput";
 import logoBuscar from "../../utils/assets/logo.svg"
@@ -20,6 +20,7 @@ const Cadastro = () => {
     const capitalizeInitials = (str) => {
         return str.toLowerCase().replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
     };
+    
 
     async function handleCadastrar() {
         api2.post("/usuarios/cadastrar", {
@@ -32,9 +33,56 @@ const Cadastro = () => {
             toast.success("Cadastro realizado com sucesso!");
             navigate("/login")
         }).catch((e) => {
-            console.log("Erro ao realizar cadastro: " + e);
-            toast.error("Erro ao realizar cadastro!")
+            if(e.response.status == 400){
+                toast.error("Preencha todos os campos corretamente.")
+                setVisualErrorEffects(400)
+            }else if(e.response.status == 409){
+                toast.error("Email já cadastrado.")
+            }else{
+                toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
+            }
         })
+    }
+
+
+    useEffect(() => {
+        let email = document.getElementById("inp_email")
+        let senha = document.getElementById("inp_senha")
+        let sobrenome = document.getElementById("inp_sobrenome")
+        let nome = document.getElementById("inp_nome")
+
+        const inps = [email, senha,sobrenome,nome]
+        inps.forEach((inp) => {
+            inp.addEventListener("focus", () => {
+                inp.style.borderColor = "#4fa94d"
+            })
+            inp.addEventListener("focusout", () => {
+                inp.style.borderColor = "#F8F7F4"
+            })
+        })
+    },[]);
+    function setVisualErrorEffects(status){
+        let email = document.getElementById("inp_email")
+        let senha = document.getElementById("inp_senha")
+        let sobrenome = document.getElementById("inp_sobrenome")
+        let nome = document.getElementById("inp_nome")
+
+        const inps = [email, senha,sobrenome,nome]
+
+        inps.forEach((inp) => {
+            if(status == 400){
+                if(inp.value == ""){
+                    inp.style.borderColor = 'red'
+                }
+            }else{
+                inp.style.borderColor = 'red'
+            }
+        })
+        setTimeout(() => {
+           inps.forEach((inp) => {
+                inp.style.borderColor = '#F8F7F4'
+           })
+        }, 2500);
     }
 
     return (

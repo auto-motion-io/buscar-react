@@ -35,7 +35,7 @@ const Login = () => {
                 setVisualErrorEffects()
             }else if(e.response.status == 400){
                 toast.error("Preencha todos os campos corretamente.")
-                setVisualErrorEffects()
+                setVisualErrorEffects(400)
             }else{
                 toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
             }
@@ -57,16 +57,25 @@ const Login = () => {
             })
         })
     },[]);
-    function setVisualErrorEffects(){
+    function setVisualErrorEffects(status){
         let email = document.getElementById("inp_email")
         let senha = document.getElementById("inp_senha")
-        email.style.borderColor = 'red'
-        senha.style.borderColor = 'red'
-        
+        const inps = [email, senha]
+
+        inps.forEach((inp) => {
+            if(status == 400){
+                if(inp.value == ""){
+                    inp.style.borderColor = 'red'
+                }
+            }else{
+                inp.style.borderColor = 'red'
+            }
+        })
         setTimeout(() => {
-            email.style.borderColor = '#F8F7F4'
-            senha.style.borderColor = '#F8F7F4'
-        }, 4000);
+            inps.forEach((inp) => {
+                 inp.style.borderColor = '#F8F7F4'
+            })
+         }, 2500);
     }
 
 
