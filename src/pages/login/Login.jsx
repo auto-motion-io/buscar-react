@@ -30,10 +30,32 @@ const Login = () => {
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
             sessionStorage.setItem("token", window.btoa(response.data.token))
         }).catch((e) => {
-            console.log(e)
-            toast.error(e.response.data.message)
+            if(e.response.status == 401 || e.response.status == 404){
+                toast.error("Email ou senha incorretos.")
+                setVisualErrorEffects()
+            }else if(e.response.status == 400){
+                toast.error("Preencha todos os campos corretamente.")
+                setVisualErrorEffects()
+            }else{
+                toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
+            }
             setIsLoading(false)
         })
+    }
+
+    function setVisualErrorEffects(){
+        let email = document.getElementById("inp_email")
+        let senha = document.getElementById("inp_senha")
+        
+        
+        email.style.borderColor = 'red'
+        senha.style.borderColor = 'red'
+        
+
+        setTimeout(() => {
+            email.style.borderColor = "#F8F7F4"
+            senha.style.borderColor = "#F8F7F4"
+        },4000)
     }
 
     return (
@@ -44,7 +66,9 @@ const Login = () => {
                     <div className={styles["container"]}>
                         <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/")} />
                         <div className={styles["form"]}>
-                            <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => setEmail(e.target.value)} />
+                            <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => {
+                                setEmail(e.target.value)
+                                }} />
                             <FormInput label={"Senha*"} width={"20vw"} id={"inp_senha"} onChange={(e) => setSenha(e.target.value)} type="password" />
                             <a href="/recuperarSenha">Esqueci minha senha</a>
                         </div>

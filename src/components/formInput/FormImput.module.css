@@ -9,8 +9,13 @@
     border-radius: 5vh;
     padding: 0 1vw;
     outline: none;
-    border: none;
+    border: 1px solid #F8F7F4;
     background-color: #F8F7F4;
+    transition: 1s;
+}
+
+.container-input input:focus {
+    border: 1px solid #457847;
 }
 
 .container-input label {
