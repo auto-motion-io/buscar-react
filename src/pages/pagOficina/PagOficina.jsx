@@ -275,7 +275,7 @@ const PagOficina = () => {
         </div>
         <div className={styles["right-side"]}>
           <div className={styles["img-mock"]}>
-            <img src={imagem} style={{width:'30vw', borderRadius:'5vh', height:'40vh'}} alt="Imagem da Oficina" />
+            <img src={imagem} style={{width:'30vw', borderRadius:'5vh', height:'40vh', objectFit:'cover'}} alt="Imagem da Oficina" />
           </div>
         </div>
       </div>
