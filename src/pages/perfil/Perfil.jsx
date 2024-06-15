@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Botao from "../../components/botao/Botao";
 import Loader from "../../components/loader/Loader";
-
+import Swal from 'sweetalert2'
 const Perfil = () => {
 
     const navigate = useNavigate();
@@ -107,6 +107,28 @@ const Perfil = () => {
         else {
             backModalRef.current.style.display = "flex"
         }
+    }
+
+    function logout() {
+        Swal.fire({
+            title: 'Deseja realmente sair?',
+            showCancelButton: true,
+            confirmButtonText: `Sair`,
+            cancelButtonText: `Cancelar`,
+            confirmButtonColor: "#3B563C",
+            cancelButtonColor: "#d33",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sessionStorage.clear();
+                toast.success("Deslogado com sucesso.. Redirecionando para login.",{
+                    autoClose: 1500
+                });
+                setTimeout(() => {
+                    navigate("/login");
+                }, 2000);
+            }
+        })
+        
     }
 
     return (
@@ -216,6 +238,11 @@ const Perfil = () => {
                             texto={"Alterar Senha"}
                             width={"10vw"}
                             onClick={changeModal}
+                        />
+                        <Botao
+                            texto={"Sair"}
+                            width={"5vw"}
+                            onClick={logout}
                         />
                         <div ref={saveButtonRef} className={styles.save} onClick={() => { saveChanges() }}>
                             <img src={disquete} alt="" />
