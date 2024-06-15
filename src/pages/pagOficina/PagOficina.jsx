@@ -21,6 +21,7 @@ import FormImput from "../../components/formInput/FormImput"
 import Botao from "../../components/botao/Botao";
 import estrelaCinza from "../../utils/assets/estrelaCinza.svg"
 import { toast } from "react-toastify";
+import BoxAvaliacao from "../../components/boxAvaliacao/BoxAvaliacao";
 
 const PagOficina = () => {
   const { id } = useParams();
@@ -40,6 +41,7 @@ const PagOficina = () => {
   const [loading, setLoading] = useState(true);
   const [servicos, setServicos] = useState([]);
   const [pecas, setPecas] = useState([]);
+  const [avaliacoes, setAvaliacoes] = useState([]);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [userComentario, setUserComentario] = useState("");
@@ -94,6 +96,7 @@ const PagOficina = () => {
         buscarEnderecoFormatado(data.cep, data.numero);
         getServicos();
         getPecas();
+        getAvaliacoes();
       } catch (error) {
         console.log("Erro ao buscar dados da oficina:", error);
         navigate("/servicos");
@@ -134,6 +137,16 @@ const PagOficina = () => {
       }
     }
 
+    async function getAvaliacoes() {
+      try {
+        const response = await api2.get(`/avaliacoes/oficina/${id}`);
+        console.log(response.data)
+        setAvaliacoes(response.data)
+      } catch (error) {
+        console.error("Erro ao buscar avaliações: " + error)
+      }
+    }
+
     getOficinaDetails();
   }, [id, navigate]);
 
@@ -157,23 +170,35 @@ const PagOficina = () => {
     setUserRating(index);
   };
 
-  async function handleSubmit(){
-    api2.post(`/avaliacoes`,{
-      nota: userRating,
-      comentario: userComentario,
-      fkUsuario: sessionStorage.getItem("idUsuario"),
-      fkOficina: id
-    },{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    }).then(() =>{
-      toast.success("Avaliação enviada com sucesso!")
-    }).catch((e) =>{
-      console.error("Error: " +e)
-      toast.error("Erro ao enviar avaliação, tente novamente")
-    })
+  async function handleSubmit() {
+    try {
+      const response = await api2.post(`/avaliacoes`, {
+        nota: userRating,
+        comentario: userComentario,
+        fkUsuario: sessionStorage.getItem("idUsuario"),
+        fkOficina: id
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // Após enviar a avaliação com sucesso, obter a nova avaliação do response.data
+      const novaAvaliacao = response.data;
+
+      // Adicionar a nova avaliação ao estado local de avaliações
+      setAvaliacoes([...avaliacoes, novaAvaliacao]);
+
+      // Limpar o estado local de nota e comentário
+      setUserRating(0);
+      setUserComentario("");
+
+      toast.success("Avaliação enviada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error);
+    }
   }
+
 
 
   if (loading) {
@@ -300,7 +325,20 @@ const PagOficina = () => {
       <section className={styles["avaliacoes"]}>
         <div className={styles["left-side"]}>
           <h1>Avaliações</h1>
-          <div className={styles["cards-avaliacoes"]}></div>
+          <div className={styles["cards-avaliacoes"]}>
+            {avaliacoes.length > 0 ? (
+              avaliacoes.slice().reverse().map((avaliacao, index) => (
+                <BoxAvaliacao
+                  key={index}
+                  autor={avaliacao.usuarioAvaliacao.nome + " " + avaliacao.usuarioAvaliacao.sobrenome}
+                  nota={avaliacao.nota.toFixed(1)}
+                  comentario={avaliacao.comentario}
+                />
+              ))
+            ) : (
+              <p>As avaliações dessa oficina aparecerão aqui.</p>
+            )}
+          </div>
         </div>
         <div className={styles["right-side"]}>
           <h1 style={{ width: "25.1vw" }}>Sua Avaliação</h1>
@@ -319,10 +357,14 @@ const PagOficina = () => {
               ))}
             </div>
           </div>
-          <FormImput label={"Comentário"} height="30vh" width={"23vw"} onChange={(e) => setUserComentario(e.target.value)}/>
+          <div className={styles["container-textArea"]}>
+            <label htmlFor="ta_comment">Comentário</label>
+            <textarea maxLength={255} id="ta_comment" onChange={(e) => setUserComentario(e.target.value)}></textarea>
+          </div>
           <Botao texto={"Enviar"} width={"9vw"} onClick={handleSubmit} />
         </div>
       </section>
+
       <Footer />
     </main>
   );

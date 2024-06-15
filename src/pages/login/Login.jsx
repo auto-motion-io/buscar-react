@@ -30,8 +30,8 @@ const Login = () => {
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
             sessionStorage.setItem("token", window.btoa(response.data.token))
         }).catch((e) => {
-            console.log("Erro ao realizar login: " + e)
-            toast.error("Erro ao realizar login!")
+            console.log(e)
+            toast.error(e.response.data.message)
             setIsLoading(false)
         })
     }
