@@ -358,7 +358,7 @@ const PagOficina = () => {
           </div>
           <div className={styles["container-textArea"]}>
             <label htmlFor="ta_comment">Comentário</label>
-            <textarea maxLength={255} id="ta_comment" onChange={(e) => setUserComentario(e.target.value)}></textarea>
+            <textarea style={{ fontSize: '22px' }} maxLength={255} id="ta_comment" onChange={(e) => setUserComentario(e.target.value)}></textarea>
           </div>
           <Botao texto={"Enviar"} width={"9vw"} onClick={handleSubmit} />
         </div>
