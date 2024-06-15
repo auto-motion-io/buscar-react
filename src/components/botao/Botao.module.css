@@ -8,6 +8,15 @@
     font-family: "Product-Sans-bold";
     font-size: 2vh;
     width: 8vw;
+    transition: .1s;
+}
+
+.botao:hover{
+   transform: scale(1.05);
+}
+
+.botao:active{
+    transform: scale(1);
 }
 
 @media (max-width: 767px){

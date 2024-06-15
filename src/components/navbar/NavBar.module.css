@@ -13,7 +13,21 @@ nav{
     justify-content: space-between;
 }
 .menu img{
+    transition: .4s;
     height: 3vh;
+}
+
+.menu span{
+    transition: .2s;
+}
+
+.menu span:hover{
+    filter: grayscale(0);
+    opacity: 1; 
+}
+
+.menu span:active{
+    transform: scale(90%);
 }
 
 .menu span{
@@ -39,6 +53,8 @@ span.active {
     padding: 0;
     font-size: 2vh;
 }
+
+
 
 .logo{
     width: 12vw;
