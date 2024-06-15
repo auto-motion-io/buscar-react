@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Login.module.css"
 import FormInput from "../../components/formInput/FormImput";
 import logoBuscar from "../../utils/assets/logo.svg"
@@ -43,20 +43,32 @@ const Login = () => {
         })
     }
 
+    useEffect(() => {
+        let email = document.getElementById("inp_email")
+        let senha = document.getElementById("inp_senha")
+
+        const inps = [email, senha]
+        inps.forEach((inp) => {
+            inp.addEventListener("focus", () => {
+                inp.style.borderColor = "#4fa94d"
+            })
+            inp.addEventListener("focusout", () => {
+                inp.style.borderColor = "#F8F7F4"
+            })
+        })
+    },[]);
     function setVisualErrorEffects(){
         let email = document.getElementById("inp_email")
         let senha = document.getElementById("inp_senha")
-        
-        
         email.style.borderColor = 'red'
         senha.style.borderColor = 'red'
         
-
         setTimeout(() => {
-            email.style.borderColor = "#F8F7F4"
-            senha.style.borderColor = "#F8F7F4"
-        },4000)
+            email.style.borderColor = '#F8F7F4'
+            senha.style.borderColor = '#F8F7F4'
+        }, 4000);
     }
+
 
     return (
         <>
