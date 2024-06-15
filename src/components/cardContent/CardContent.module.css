@@ -26,6 +26,13 @@
     width: 89%;
     border-radius: 4vh;
 }
+.imagem img{
+    background-color:rgb(213, 213, 213);
+    height: 30vh;
+    width: 100%;
+    border-radius: 4vh;
+    border: none;
+}
 
 .title{
     width: 87%;

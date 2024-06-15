@@ -96,6 +96,7 @@ const Oficinas = () => {
               end={data.logradouro + ", " + data.numero}
               tel={data.informacoesOficina.whatsapp || "N/A"}
               nota={data.nota}
+              imagem={data.logoUrl}
               onclickCard={() => handleCard(data.id)}
             />
           ))}
