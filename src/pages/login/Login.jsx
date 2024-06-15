@@ -30,10 +30,10 @@ const Login = () => {
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
             sessionStorage.setItem("token", window.btoa(response.data.token))
         }).catch((e) => {
-            if(e.response.status == 401 || e.response.status == 404){
+            if(e.response.status === 401 || e.response.status === 404){
                 toast.error("Email ou senha incorretos.")
                 setVisualErrorEffects()
-            }else if(e.response.status == 400){
+            }else if(e.response.status === 400){
                 toast.error("Preencha todos os campos corretamente.")
                 setVisualErrorEffects(400)
             }else{
@@ -63,8 +63,8 @@ const Login = () => {
         const inps = [email, senha]
 
         inps.forEach((inp) => {
-            if(status == 400){
-                if(inp.value == ""){
+            if(status === 400){
+                if(inp.value === ""){
                     inp.style.borderColor = 'red'
                 }
             }else{

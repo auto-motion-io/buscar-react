@@ -17,7 +17,6 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import CardContent from "../../components/cardContent/CardContent";
 import leftArrow from "../../utils/assets/leftArrow.svg";
-import FormImput from "../../components/formInput/FormImput"
 import Botao from "../../components/botao/Botao";
 import estrelaCinza from "../../utils/assets/estrelaCinza.svg"
 import { toast } from "react-toastify";

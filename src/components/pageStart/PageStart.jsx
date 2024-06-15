@@ -3,12 +3,14 @@ import Input from "../input/Input";
 import styles from "./PageStart.module.css"
 import local from "../../utils/assets/localizacao.svg"
 import lupa from "../../utils/assets/lupa.svg"
+import { api1 } from "../../api";
 
 const PageStart = ({pagina, filtro}) => {
 
 
     const [localizacao, setLocalizacao] = useState("")
     const [palavraChave, setPalavraChave] = useState("")
+
     return(
         <div className={styles["container"]}>
             <div className={styles["loc"]}>

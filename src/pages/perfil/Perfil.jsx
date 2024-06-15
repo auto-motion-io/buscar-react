@@ -12,7 +12,6 @@ import { api2 } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Botao from "../../components/botao/Botao";
-import Loader from "../../components/loader/Loader";
 import Swal from 'sweetalert2'
 const Perfil = () => {
 
@@ -27,7 +26,6 @@ const Perfil = () => {
     const [novaSenha, setNovaSenha] = useState("");
     const [confSenha, setConfSenha] = useState("");
     const [mudandoSenha, setMudandoSenha] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
 
     const saveButtonRef = useRef(null);
@@ -59,7 +57,6 @@ const Perfil = () => {
     }
 
     async function changePassword(){
-        setIsLoading(true);
         api2.put(`/usuarios/atualizar-senha/${idUser}`,{
             senhaAntiga: senhaAtual,
             senhaNova: novaSenha
@@ -71,7 +68,6 @@ const Perfil = () => {
         }).catch((e) =>{
             console.log("Erro" +e)
             toast.error("Erro ao mudar senha")
-            setIsLoading(false);
         })
     }
 

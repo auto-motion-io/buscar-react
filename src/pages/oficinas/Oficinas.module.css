@@ -5,3 +5,16 @@
     width: 82vw;
     flex-wrap: wrap;
 }
+
+.pesquisa{
+    left: 56vw;
+    top: 50vh;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7vh;
+    width: 7vh;
+    background-color: gray;
+    border-radius: 50%;
+}

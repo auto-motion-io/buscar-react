@@ -33,10 +33,10 @@ const Cadastro = () => {
             toast.success("Cadastro realizado com sucesso!");
             navigate("/login")
         }).catch((e) => {
-            if(e.response.status == 400){
+            if(e.response.status === 400){
                 toast.error("Preencha todos os campos corretamente.")
                 setVisualErrorEffects(400)
-            }else if(e.response.status == 409){
+            }else if(e.response.status === 409){
                 toast.error("Email já cadastrado.")
             }else{
                 toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
@@ -70,8 +70,8 @@ const Cadastro = () => {
         const inps = [email, senha,sobrenome,nome]
 
         inps.forEach((inp) => {
-            if(status == 400){
-                if(inp.value == ""){
+            if(status === 400){
+                if(inp.value === ""){
                     inp.style.borderColor = 'red'
                 }
             }else{
