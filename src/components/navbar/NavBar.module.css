@@ -90,6 +90,13 @@ span.active {
     background-color: #3B563C;
 }
 
+.fotoPerfil img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .infosPessoais{
     display: flex;
     align-items: start;

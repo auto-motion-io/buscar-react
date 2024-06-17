@@ -29,6 +29,8 @@ const Login = () => {
             sessionStorage.setItem("nome", response.data.nome)
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
             sessionStorage.setItem("token", window.btoa(response.data.token))
+            sessionStorage.setItem("imagem", response.data.fotoUrl)
+            console.log(response.data.fotoUrl)
         }).catch((e) => {
             if(e.response.status === 401 || e.response.status === 404){
                 toast.error("Email ou senha incorretos.")

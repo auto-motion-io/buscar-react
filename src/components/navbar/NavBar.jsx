@@ -15,6 +15,7 @@ const NavBar = ({ currentPage }) => {
 
     const [logado, setLogado] = useState("")
     const [nome, setNome] = useState("");
+    const imagem = sessionStorage.getItem("imagem")
 
     function mudarPagina(pagina) {
         navigate(pagina);
@@ -70,7 +71,7 @@ const NavBar = ({ currentPage }) => {
             {logado ? (
                 <div className={styles["perfil"]}>
                     <div className={styles["fotoPerfil"]}>
-                        <img src="" alt="" />
+                        <img src={imagem !== undefined? imagem: ""} alt="" />
                     </div>
                     <div className={styles["infosPessoais"]}>
                         <p>Boa Tarde,</p>
