@@ -29,6 +29,13 @@
     border-radius: 50%;
 }
 
+.imagemPerfil img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .dados {
     display: flex;
     align-items: start;

@@ -332,6 +332,7 @@ const PagOficina = () => {
                   autor={avaliacao.usuarioAvaliacao.nome + " " + avaliacao.usuarioAvaliacao.sobrenome}
                   nota={avaliacao.nota.toFixed(1)}
                   comentario={avaliacao.comentario}
+                  fotoPerfil={avaliacao.usuarioAvaliacao.fotoUrl}
                 />
               ))
             ) : (
