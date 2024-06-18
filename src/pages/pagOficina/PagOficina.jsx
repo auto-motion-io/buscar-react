@@ -21,6 +21,7 @@ import Botao from "../../components/botao/Botao";
 import estrelaCinza from "../../utils/assets/estrelaCinza.svg"
 import { toast } from "react-toastify";
 import BoxAvaliacao from "../../components/boxAvaliacao/BoxAvaliacao";
+import perfilPadrao from "../../utils/assets/perfilPadrao.png"
 
 const PagOficina = () => {
   const { id } = useParams();
@@ -44,7 +45,7 @@ const PagOficina = () => {
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [userComentario, setUserComentario] = useState("");
-  const token = atob(sessionStorage.getItem("token"))
+  const token = atob(sessionStorage.getItem("token"));
 
   const responsive = {
     0: { items: 1 },
@@ -332,7 +333,7 @@ const PagOficina = () => {
                   autor={avaliacao.usuarioAvaliacao.nome + " " + avaliacao.usuarioAvaliacao.sobrenome}
                   nota={avaliacao.nota.toFixed(1)}
                   comentario={avaliacao.comentario}
-                  fotoPerfil={avaliacao.usuarioAvaliacao.fotoUrl}
+                  fotoPerfil={avaliacao.usuarioAvaliacao.fotoUrl || perfilPadrao}
                 />
               ))
             ) : (

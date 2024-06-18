@@ -13,11 +13,15 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Botao from "../../components/botao/Botao";
 import Swal from 'sweetalert2'
+import { createClient } from "@supabase/supabase-js";
+import Loader from "../../components/loader/Loader";
+
 const Perfil = () => {
 
     const navigate = useNavigate();
     const idUser = sessionStorage.getItem("idUsuario");
-
+    
+    const [isLoading, setIsLoading] = useState(false);
     const [editing, setEditing] = useState(false);
     const [nome, setNome] = useState("");
     const [sobrenome, setSobrenome] = useState("");
@@ -26,6 +30,12 @@ const Perfil = () => {
     const [novaSenha, setNovaSenha] = useState("");
     const [confSenha, setConfSenha] = useState("");
     const [mudandoSenha, setMudandoSenha] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const perfilPadrao = sessionStorage.getItem("imagem");
+
+    const supabaseUrl = "https://jeyoqssrkcibrvhoobsk.supabase.co"
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpleW9xc3Nya2NpYnJ2aG9vYnNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM1MzYzOTMsImV4cCI6MjAyOTExMjM5M30.laseDYQK0WEdEY764voRE3nZMOqwqMth2mdVyJHO4wU"
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
 
     const saveButtonRef = useRef(null);
@@ -47,26 +57,26 @@ const Perfil = () => {
             .then((response) => {
                 toast.success("Modificações salvas!")
                 sessionStorage.setItem("nome", response.data.nome)
-                setTimeout(() =>{
+                setTimeout(() => {
                     window.location.reload()
-                },2000)
+                }, 2000)
             }).catch((e) => {
                 console.log("Erro" + e)
                 toast.error("Erro!")
             })
     }
 
-    async function changePassword(){
-        api2.put(`/usuarios/atualizar-senha/${idUser}`,{
+    async function changePassword() {
+        api2.put(`/usuarios/atualizar-senha/${idUser}`, {
             senhaAntiga: senhaAtual,
             senhaNova: novaSenha
-        }, config).then(() =>{
+        }, config).then(() => {
             changeModal()
             toast.success("Senha alterada com sucesso")
             sessionStorage.clear()
             navigate("/login")
-        }).catch((e) =>{
-            console.log("Erro" +e)
+        }).catch((e) => {
+            console.log("Erro" + e)
             toast.error("Erro ao mudar senha")
         })
     }
@@ -116,7 +126,7 @@ const Perfil = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 sessionStorage.clear();
-                toast.success("Deslogado com sucesso.. Redirecionando para login.",{
+                toast.success("Deslogado com sucesso.. Redirecionando para login.", {
                     autoClose: 1500
                 });
                 setTimeout(() => {
@@ -124,11 +134,52 @@ const Perfil = () => {
                 }, 2000);
             }
         })
-        
+
     }
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+        uploadImage(e.target.files[0]);
+    };
+
+    async function uploadImage(file){
+        setIsLoading(true)
+        const filePath = `fotosUsuario/${Math.random()}.png`
+        const { error } = await supabase.storage.from('ofc-photos').upload(filePath, file)
+        if(error){
+            toast.error("Erro ao atualizar imagem "+ error.message)
+            setIsLoading(false)
+            return
+        }
+
+        const publicUrl = supabase.storage.from("ofc-photos").getPublicUrl(filePath).data.publicUrl
+
+        await api2.put(`/usuarios/atualizar-foto/${idUser}`, {
+            fotoUrl: publicUrl
+        }, config).then((response) =>{
+            setIsLoading(false)
+            console.log(response)
+            sessionStorage.setItem("imagem", publicUrl)
+            toast.success("Imagem alterada com sucesso, atualizando em 2 segundos",{
+                autoClose: 1900
+            })
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000);
+        }).catch((e) =>{
+            setIsLoading(false)
+            console.error("Erro ao atualizar imagem: " +e)
+            toast.error("Erro ao atualizar imagem!" + e)
+        })
+    }
+
+    
+
+
 
     return (
         <>
+            <Loader show={isLoading} />
             <div ref={backModalRef} className={styles["back-modal"]}>
                 <div className={styles["modal-senha"]}>
                     <div className={styles["form-senha"]}>
@@ -197,14 +248,14 @@ const Perfil = () => {
                     <span onClick={() => setEditing(!editing)} className={styles.lapis}>
                         <img src={lapis} alt="" />
                     </span>
-                    <div className={styles.perfilGerente}>
-                        <img src="" alt="" />
+                    <div className={styles.fotoPerfil}>
+                        <img src={perfilPadrao} alt="" />
                     </div>
                     <div className={styles.form}>
                         <FormInput
                             backgroundColor={"#eceae59e"}
                             label={"Nome"}
-                            width={"11vw"}
+                            width={"10.9vw"}
                             id={"inp_nome"}
                             onChange={(e) => setNome(e.target.value)}
                             value={nome}
@@ -213,7 +264,7 @@ const Perfil = () => {
                         <FormInput
                             backgroundColor={"#eceae59e"}
                             label={"Sobrenome"}
-                            width={"11vw"}
+                            width={"10.9vw"}
                             id={"inp_sobrenome"}
                             onChange={(e) => setSobrenome(e.target.value)}
                             value={sobrenome}
@@ -232,8 +283,19 @@ const Perfil = () => {
                     <div className={styles["botoes"]}>
                         <Botao
                             texto={"Alterar Senha"}
-                            width={"10vw"}
+                            width={"9vw"}
                             onClick={changeModal}
+                        />
+                        <input
+                            type="file"
+                            id="fileInput"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <Botao
+                            texto={"Alterar Foto"}
+                            width={"8vw"}
+                            onClick={() => document.getElementById('fileInput').click()}
                         />
                         <Botao
                             texto={"Sair"}

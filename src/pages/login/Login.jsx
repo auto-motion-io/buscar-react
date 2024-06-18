@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api2 } from "../../api";
 import Loader from "../../components/loader/Loader";
+import perfilPadrao from "../../utils/assets/perfilPadrao.png"
 
 const Login = () => {
 
@@ -29,7 +30,7 @@ const Login = () => {
             sessionStorage.setItem("nome", response.data.nome)
             sessionStorage.setItem("idUsuario", response.data.idUsuario)
             sessionStorage.setItem("token", window.btoa(response.data.token))
-            sessionStorage.setItem("imagem", response.data.fotoUrl)
+            sessionStorage.setItem("imagem", response.data.fotoUrl || perfilPadrao)
             console.log(response.data.fotoUrl)
         }).catch((e) => {
             if(e.response.status === 401 || e.response.status === 404){
