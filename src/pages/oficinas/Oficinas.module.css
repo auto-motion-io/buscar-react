@@ -21,3 +21,10 @@
 .pesquisa img{
     height: 4vh;
 }
+
+.no-content{
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    display: none;
+}

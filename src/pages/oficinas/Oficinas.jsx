@@ -3,6 +3,7 @@ import NavBar from "../../components/navbar/NavBar";
 import PageStart from "../../components/pageStart/PageStart";
 import Input from "../../components/input/Input";
 import seta from "../../utils/assets/seta.svg";
+import lupa from "../../utils/assets/lupa-branca.svg"
 import styles from "./Oficinas.module.css";
 import CardContent from "../../components/cardContent/CardContent";
 import { api1, api2 } from "../../api";
@@ -12,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import lupa from "../../utils/assets/lupa-branca.svg"
 
 const Oficinas = () => {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ const Oficinas = () => {
   const [tipoVeiculo, setTipoVeiculo] = useState("");
   const [propulsao, setPropulsao] = useState("");
   const [marca, setMarca] = useState("");
+  const [palavraChave, setPalavraChave] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const tipoVeiculoOptions = ["Carro", "Moto", "Caminhão", "Ônibus", ""];
@@ -30,7 +31,7 @@ const Oficinas = () => {
     return options.includes(value);
   };
 
-  const getOficinas = async (tipoVeiculo, propulsao, marca) => {
+  const getOficinas = async (tipoVeiculo, propulsao, marca, palavraChave) => {
     if (!validateInput(tipoVeiculo, tipoVeiculoOptions)) {
       toast.error('Tipo de Veículo inválido');
       return;
@@ -48,11 +49,12 @@ const Oficinas = () => {
 
     try {
       setIsLoading(true);
-      const response = await api1.get(`/oficinas/tipo-veiculo-propulsao-marca?tipoVeiculo=${tipoVeiculo}&tipoPropulsao=${propulsao}&marca=${marca}`);
+      const response = await api1.get(`/oficinas/tipo-veiculo-propulsao-marca-nome?tipoVeiculo=${tipoVeiculo}&tipoPropulsao=${propulsao}&marca=${marca}&nome=${palavraChave}`);
       const { data } = response;
       
       if (response.status === 204){
-        toast.warning("Nenhuma oficina encontrada com esses filtros")
+        setCardsData("")
+        document.getElementById("no-content").style.display = "flex"
         setIsLoading(false)
         return
       }
@@ -96,8 +98,8 @@ const Oficinas = () => {
   };
 
   useEffect(() => {
-    getOficinas(tipoVeiculo, propulsao, marca);
-  }, []);
+    getOficinas(tipoVeiculo, propulsao, marca, palavraChave);
+  }, [palavraChave]);
 
   const handleCard = (id) => {
     navigate(`/oficinas/${id}`);
@@ -149,13 +151,13 @@ const Oficinas = () => {
       <ToastContainer />
       <Loader show={isLoading} />
       <NavBar currentPage={"oficinas"} />
-      <PageStart pagina={"Oficinas"} filtro={filtros} />
-      <div onClick={() => getOficinas(tipoVeiculo, propulsao, marca)} className={styles["pesquisa"]}>
+      <PageStart pagina={"Oficinas"} filtro={filtros} setPalavraChave={setPalavraChave} />
+      <div onClick={() => getOficinas(tipoVeiculo, propulsao, marca, palavraChave)} className={styles["pesquisa"]}>
         <img src={lupa} alt="Buscar" />
       </div>
-      <div className={styles["content"]}>
-        {cardsData &&
-          cardsData.map((data) => (
+      {!cardsData.length == 0 ? (
+        <div className={styles["content"]}>
+        {cardsData.map((data) => (
             <CardContent
               key={data.id}
               type={"Oficina"}
@@ -168,6 +170,12 @@ const Oficinas = () => {
             />
           ))}
       </div>
+      ) :(
+        <div id="no-content" className={styles["no-content"]}>
+          Nenhuma oficina foi encontrada com esses filtros!
+        </div>
+      )}
+      
       <Footer />
     </main>
   );

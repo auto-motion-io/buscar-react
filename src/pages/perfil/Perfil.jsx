@@ -30,7 +30,6 @@ const Perfil = () => {
     const [novaSenha, setNovaSenha] = useState("");
     const [confSenha, setConfSenha] = useState("");
     const [mudandoSenha, setMudandoSenha] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
     const perfilPadrao = sessionStorage.getItem("imagem");
 
     const supabaseUrl = "https://jeyoqssrkcibrvhoobsk.supabase.co"
@@ -138,7 +137,6 @@ const Perfil = () => {
     }
 
     const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
         uploadImage(e.target.files[0]);
     };
 
