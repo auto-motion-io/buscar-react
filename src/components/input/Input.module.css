@@ -23,3 +23,9 @@
 input::placeholder{
     color: #7C7A77;
 }
+
+.datalist {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  

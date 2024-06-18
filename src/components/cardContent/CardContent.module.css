@@ -7,7 +7,7 @@
     flex-direction: column;
     margin-bottom: 7vh;
     cursor: pointer;
-    padding: 1vw 0;
+    padding: 1vw 0 2vw;
     border-radius: 3vh;
     transition: box-shadow 0.2s ease-in-out;
     gap: 3.5vh;
