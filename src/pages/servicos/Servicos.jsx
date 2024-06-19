@@ -128,7 +128,7 @@ const Servicos = () => {
               tel={data.oficina.informacoesOficina.whatsapp || "N/A"}
               nota={data.nota}
               onclickCard={() => handleCard(data.oficina.id)}
-              imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servico.png?t=2024-06-18T23%3A46%3A33.612Z"}
+              imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servicoPadrao.jpg"}
             />
           ))}
         </div>

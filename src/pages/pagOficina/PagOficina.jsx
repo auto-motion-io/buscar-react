@@ -120,7 +120,6 @@ const PagOficina = () => {
     async function getServicos() {
       try {
         const response = await api1.get(`/buscar-servicos/oficina/${id}`);
-        console.log(response.data)
         setServicos(response.data);
       } catch (error) {
         console.error("Erro ao buscar serviços: ", error);
@@ -130,7 +129,6 @@ const PagOficina = () => {
     async function getPecas() {
       try {
         const response = await api1.get(`/produtoEstoque/oficina/${id}`);
-        console.log(response.data)
         setPecas(response.data);
       } catch (error) {
         console.error("Erro ao buscar serviços: ", error);
@@ -140,7 +138,6 @@ const PagOficina = () => {
     async function getAvaliacoes() {
       try {
         const response = await api2.get(`/avaliacoes/oficina/${id}`);
-        console.log(response.data)
         setAvaliacoes(response.data)
       } catch (error) {
         console.error("Erro ao buscar avaliações: " + error)
@@ -285,7 +282,7 @@ const PagOficina = () => {
         <AliceCarousel
           mouseTracking
           items={(servicos && servicos.length > 0 ? servicos : []).map((servico, index) => (
-            <CardContent key={index} type={"miniServico"} titulo={servico.nome} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servico.png?t=2024-06-18T23%3A46%3A33.612Z"}/>
+            <CardContent key={index} type={"miniServico"} titulo={servico.nome} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servicoPadrao.jpg"}/>
           ))}
           responsive={responsive}
           infinite={true}
@@ -306,7 +303,7 @@ const PagOficina = () => {
         <AliceCarousel
           mouseTracking
           items={(pecas && pecas.length > 0 ? pecas : []).map((peca, index) => (
-            <CardContent key={index} type={"miniPeca"} titulo={peca.nome} valor={`R$${peca.valorVenda}`} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/pe_as.jpg?t=2024-06-18T23%3A46%3A42.233Z"}/>
+            <CardContent key={index} type={"miniPeca"} titulo={peca.nome} valor={`R$${peca.valorVenda}`} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/pecaPadrao.jpg"}/>
           ))}
           responsive={responsive}
           infinite={true}

@@ -121,7 +121,7 @@ const Pecas = () => {
               tel={data.oficina.informacoesOficina.whatsapp || "N/A"}
               nota={"R$" + data.valorVenda}
               onclickCard={() => handleCard(data.oficina.id)}
-              imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/pe_as.jpg?t=2024-06-18T23%3A46%3A42.233Z"}
+              imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/pecaPadrao.jpg"}
             />
           ))}
         </div>
