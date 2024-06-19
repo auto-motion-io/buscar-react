@@ -5,6 +5,8 @@ import logoBuscar from "../../utils/assets/logo.svg"
 import Botao from "../../components/botao/Botao";
 import imagemFundo from "../../utils/assets/img-login.svg"
 import { useNavigate } from "react-router-dom";
+import { api1 } from "../../api";
+import { toast } from "react-toastify";
 
 const MeusServicos = () => {
 
@@ -13,7 +15,15 @@ const MeusServicos = () => {
   const [token, setToken] = useState("");
 
   const handleOs = (token) => {
-    navigate(`/ordemServico/${token}`);
+    api1.get(`ordemDeServicos/token/${token}`).then(() =>{
+      navigate(`/ordemServico/${token}`);
+    }).catch((e) =>{
+      console.log(e)
+      if(e.response.status === 404){
+        toast.error("Ordem de serviço não encontrada");
+        return
+      }
+    })
   };
 
 

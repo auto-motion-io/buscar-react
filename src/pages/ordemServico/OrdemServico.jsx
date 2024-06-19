@@ -4,13 +4,14 @@ import logo from "../../utils/assets/pit&buscar.svg";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Botao from "../../components/botao/Botao";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api1 } from "../../api";
 import axios from "axios";
 
 const OrdemServico = () => {
     const contentRef = useRef();
     const { token } = useParams();
+    const navigate = useNavigate();
 
     const [dataInicio, setDataInicio] = useState("");
     const [dataFim, setDataFim] = useState("");
@@ -85,11 +86,13 @@ const OrdemServico = () => {
     
                 await consultarViaCEP(response.data.oficina.cep);
             } catch (erro) {
-                console.log(erro);
+                if(erro.response.status === 404){
+                    navigate("/meusServicos")
+                }
             }
         }
         getOs();
-    }, [token]);
+    }, [token, navigate]);
     
 
     const gerarPDF = () => {
