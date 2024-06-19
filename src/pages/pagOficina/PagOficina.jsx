@@ -53,6 +53,7 @@ const PagOficina = () => {
     1024: { items: 4 },
   };
 
+
   useEffect(() => {
     const isValidId = /^\d+$/.test(id);
 
@@ -206,6 +207,7 @@ const PagOficina = () => {
     return null; // Se hasBuscar for false, não renderiza nada
   }
 
+
   return (
     <main>
       <NavBar currentPage={"oficinas"} />
@@ -287,7 +289,7 @@ const PagOficina = () => {
           responsive={responsive}
           infinite={true}
           disableDotsControls={true}
-          autoPlay={true}
+          autoPlay={servicos.length > 4}
           autoPlayInterval={2000}
           renderPrevButton={() => {
             return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
@@ -295,7 +297,8 @@ const PagOficina = () => {
           renderNextButton={() => {
             return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
           }}
-          autoWidth={true}
+          autoWidth={servicos.length > 4}
+          disableButtonsControls={servicos.length < 4}
         />
       </section>
       <section className={styles["carrosel"]}>
@@ -308,7 +311,7 @@ const PagOficina = () => {
           responsive={responsive}
           infinite={true}
           disableDotsControls={true}
-          autoPlay={true}
+          autoPlay={pecas.length > 4}
           autoPlayInterval={2000}
           renderPrevButton={() => {
             return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
@@ -316,7 +319,8 @@ const PagOficina = () => {
           renderNextButton={() => {
             return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
           }}
-          autoWidth={true}
+          autoWidth={pecas.length > 4}
+          disableButtonsControls={pecas.length < 4}
         />
       </section>
       <section className={styles["avaliacoes"]}>
