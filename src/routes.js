@@ -26,8 +26,7 @@ function Rotas() {
                     <Route path="/pecas" element={<Pecas />} />
                     <Route path="/meusServicos" element={<MeusServicos />} />
                     <Route path="/oficinas/:id" element={<PagOficina />} />
-                    <Route path="/oficinas/:id" element={<PagOficina />} />
-                    <Route path="/ordens-servico" element={<OrdemServico />} />
+                    <Route path="/ordemServico/:token" element={<OrdemServico />} />
                 </Routes>
             </BrowserRouter>
         </>

@@ -1,250 +1,286 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./OrdemServico.module.css";
-import logo from "../../utils/assets/pit&buscar.svg"
+import logo from "../../utils/assets/pit&buscar.svg";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import Botão from "../../components/botao/Botao"
+import Botao from "../../components/botao/Botao";
+import { useParams } from "react-router-dom";
+import { api1 } from "../../api";
+import axios from "axios";
+
 const OrdemServico = () => {
     const contentRef = useRef();
+    const { token } = useParams();
+
+    const [dataInicio, setDataInicio] = useState("");
+    const [dataFim, setDataFim] = useState("");
+    const [status, setStatus] = useState("");
+    const [classificacao, setClassificacao] = useState("");
+    const [garantia, setGarantia] = useState("");
+    const [oficina, setOficina] = useState({});
+    const [cliente, setCliente] = useState({});
+    const [veiculo, setVeiculo] = useState({});
+    const [produtos, setProdutos] = useState([]);
+    const [servicos, setServicos] = useState([]);
+    const [valorTotal, setValorTotal] = useState("");
+    const [numeroOficina, setNumeroOficina] = useState("")
+    const [enderecoOficina, setEnderecoOficina] = useState({});
+
+    function formatarData(data) {
+        const dataObj = new Date(data);
+        const dia = dataObj.getDate().toString().padStart(2, '0');
+        const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0'); // Mês é base 0, por isso soma-se 1
+        const ano = dataObj.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    }
+
+
+    async function consultarViaCEP(cep) {
+        try {
+            const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+            if (response.data.erro) {
+                console.log("CEP não encontrado.");
+            } else {
+                setEnderecoOficina({
+                    rua: response.data.logradouro,
+                    cidade: response.data.localidade,
+                    estado: response.data.uf
+                });
+            }
+        } catch (error) {
+            console.log("Erro ao consultar Via CEP:", error);
+        }
+    }
+
+
+    useEffect(() => {
+        async function getOs() {
+            try {
+                const response = await api1.get(`/ordemDeServicos/token/${token}`);
+                setDataInicio(formatarData(response.data.dataInicio));
+                setDataFim(formatarData(response.data.dataFim));
+                setStatus(response.data.status);
+                setClassificacao(response.data.tipoOs);
+                setGarantia(response.data.garantia);
+                setOficina({
+                    nome: response.data.oficina.nome,
+                    telefone: response.data.oficina.informacoesOficina.whatsapp,
+                    cep: response.data.oficina.cep
+                });
+                setCliente({
+                    nome: response.data.veiculo.cliente.nome,
+                    telefone: response.data.veiculo.cliente.telefone,
+                    email: response.data.veiculo.cliente.email
+                });
+                setVeiculo({
+                    placa: response.data.veiculo.placa,
+                    cor: response.data.veiculo.cor,
+                    modelo: response.data.veiculo.modelo,
+                    ano: response.data.veiculo.anoFabricacao,
+                });
+                setProdutos(response.data.produtos);
+                setServicos(response.data.servicos);
+                setValorTotal(response.data.valorTotal);
+                setNumeroOficina(response.data.oficina.numero);
+    
+                await consultarViaCEP(response.data.oficina.cep);
+            } catch (erro) {
+                console.log(erro);
+            }
+        }
+        getOs();
+    }, [token]);
+    
 
     const gerarPDF = () => {
         const content = contentRef.current;
 
         html2canvas(content, { scale: 3 }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-
             const imgWidth = 210; // Largura A4 em mm
             const imgProps = canvas.width / canvas.height;
             const pdfHeight = imgWidth / imgProps;
-
             const pdf = new jsPDF('p', 'mm', [imgWidth, pdfHeight]);
-
             pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, pdfHeight);
             pdf.save("ordem-servico.pdf");
         });
     };
 
     return (
-    <div>
-        <div className={styles["botao"]}>
-        <Botão onClick={gerarPDF} cor="#435d44" texto="Gerar OS"  />
-        </div>
- <div ref={contentRef} className={styles["body"]}>
-        <div className={styles["folha"]}>
-        <div className={styles["id"]}>
-            <div className={styles["id_tag"]}>
-                <span className={styles["fonte-grande1"]}>#</span><span className={styles["fonte-grande1"]}>3566</span>
-            </div>
-            <div  className={styles["token"]}>
-            <span className={styles["fonte-pequena"]}>Token: </span><span className={styles["fonte-pequena"]}>25BYAN</span>
-            </div>
-
-        </div>
-
-        <div className={styles["infosGerais"]}>
-
-            <div className={styles["infos1"]} >
-                <span className={styles["fonte-negrito"]}>Início</span>
-                <span className={styles["fonte-pequena"]}>08/07/2024</span>
-                <span className={styles["fonte-negrito"]}>Término</span>
-                <span className={styles["fonte-pequena"]}>08/07/2024</span>
-
-            </div>
-            <div className={styles["infos2"]}>
-                <span className={styles["fonte-negrito"]}>Status</span>
-                <span className={styles["fonte-pequena"]}>Em andamento</span>
-                <span className={styles["fonte-negrito"]}>Classificação</span>
-                <span className={styles["fonte-pequena"]}>Serviço</span>
-            </div>
-            <div className={styles["infos3"]}>
-                <span className={styles["fonte-negrito"]}>Garantia</span>
-                <span className={styles["fonte-pequena"]}>30 Dias</span>
-            </div>
-        </div>
-
-
-
-        <div className={styles["clienteOficina"]}>
-        <div className={styles["oficina"]}>
-                <span className={styles["fonte-media"]}>Dados da Oficina</span>
-                <span className={styles["fonte-pequena"]}>Milton Serviços LTDA</span>
-                <span className={styles["fonte-pequena"]}>11 96815-6570</span>
-                <span className={styles["fonte-pequena"]}>automilton@gmail.com</span>
-                <div><span className={styles["fonte-pequena"]}>Rua Miguel Ferreira de Melo</span><span className={styles["fonte-pequena"]}>,</span><span className={styles["fonte-pequena"]}>256</span></div>
-                <div><span className={styles["fonte-pequena"]}>São Paulo</span><span className={styles["fonte-pequena"]}>,</span><span className={styles["fonte-pequena"]}>SP</span></div>
-        </div>
-        <div className={styles["cliente"]}>
-                <span className={styles["fonte-media"]}>Dados da Oficina</span>
-                <span className={styles["fonte-pequena"]}>Milton Serviços LTDA</span>
-                <span className={styles["fonte-pequena"]}>11 96815-6570</span>
-                <span className={styles["fonte-pequena"]}>automilton@gmail.com</span>
-        </div>
-        </div>
-
-
-        <div className={styles["veiculo"]}>
-            <div className={styles["titulo1"]}>
-                <span className={styles["fonte-media"]}>Dados do Veículo</span>
-            </div>
-
-            <div className={styles["titulos2"]}>
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Placa</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Cor</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Modelo</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Ano</span>
-             </div>
-            </div>
-
-
-            <div className={styles["linhaRegistro"]}>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>CMM5861</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>Prata</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>1.8</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>1998</span>
-             </div>
-        
-
-            </div>
-
-        </div>
-
-
-        <div className={styles["produto"]}>
-            <div className={styles["titulo1"]}>
-                <span className={styles["fonte-media"]}>Produtos</span>
-            </div>
-
-            <div className={styles["titulos2"]}>
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Nome</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Quantidade</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Valor Unidade</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Valor Total</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Garantia</span>
-             </div>
-            </div>
-
-
-            <div className={styles["linhaRegistro"]}>
-
-            <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>Filtro de Óleo</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>10</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>R$</span><span className={styles["fonte-pequena"]}>58,00</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>R$</span><span className={styles["fonte-pequena"]}>58,00</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>90 Dias</span>
-             </div>
-
-            </div>
-        </div>
-
-
-        <div className={styles["serviços"]}>
-        <div className={styles["titulo1"]}>
-                <span className={styles["fonte-media"]}>Serviços</span>
-            </div>
-
-            <div className={styles["titulos2"]}>
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Nome</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Valor Total</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-negrito"]}>Garantia</span>
-             </div>
-            </div>
-
-
-            <div className={styles["linhaRegistro"]}>
-
-            <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>Troca de Filtro de Óleo</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>R$</span><span className={styles["fonte-pequena"]}>58,00</span>
-             </div>
-
-             <div className={styles["unico"]}>
-             <span className={styles["fonte-pequena"]}>90 Dias</span>
-             </div>
-
-            </div>
-
-        </div>
-
-
-        <div className={styles["total"]}>
         <div>
-        <span className={styles["fonte-grande"]}>Valor Total</span>
+            <div className={styles["botao"]}>
+                <Botao onClick={gerarPDF} cor="#435d44" texto="Gerar OS" />
+            </div>
+            <div ref={contentRef} className={styles["body"]}>
+                <div className={styles["folha"]}>
+                    <div className={styles["id"]}>
+                        <div className={styles["id_tag"]}>
+                            <span className={styles["fonte-grande1"]}>#</span><span className={styles["fonte-grande1"]}>3566</span>
+                        </div>
+                        <div className={styles["token"]}>
+                            <span className={styles["fonte-pequena"]}>Token: </span><span className={styles["fonte-pequena"]}>{token}</span>
+                        </div>
+                    </div>
+
+                    <div className={styles["infosGerais"]}>
+                        <div className={styles["infos1"]}>
+                            <span className={styles["fonte-negrito"]}>Início</span>
+                            <span className={styles["fonte-pequena"]}>{dataInicio}</span>
+                            <span className={styles["fonte-negrito"]}>Término</span>
+                            <span className={styles["fonte-pequena"]}>{dataFim}</span>
+                        </div>
+                        <div className={styles["infos2"]}>
+                            <span className={styles["fonte-negrito"]}>Status</span>
+                            <span className={styles["fonte-pequena"]}>{status}</span>
+                            <span className={styles["fonte-negrito"]}>Classificação</span>
+                            <span className={styles["fonte-pequena"]}>{classificacao}</span>
+                        </div>
+                        <div className={styles["infos3"]}>
+                            <span className={styles["fonte-negrito"]}>Garantia</span>
+                            <span className={styles["fonte-pequena"]}>{garantia}</span>
+                        </div>
+                    </div>
+
+                    <div className={styles["clienteOficina"]}>
+                        <div className={styles["oficina"]}>
+                            <span className={styles["fonte-media"]}>Dados da Oficina</span>
+                            <span className={styles["fonte-pequena"]}>{oficina.nome}</span>
+                            <span className={styles["fonte-pequena"]}>{oficina.telefone}</span>
+                            <div>
+                                <span className={styles["fonte-pequena"]}>{enderecoOficina.rua}</span>
+                                <span className={styles["fonte-pequena"]}>, </span>
+                                <span className={styles["fonte-pequena"]}>{numeroOficina}</span>
+                            </div>
+                            <div>
+                                <span className={styles["fonte-pequena"]}>{enderecoOficina.cidade}</span>
+                                <span className={styles["fonte-pequena"]}>, </span>
+                                <span className={styles["fonte-pequena"]}>{enderecoOficina.estado}</span>
+                            </div>
+                        </div>
+
+                        <div className={styles["cliente"]}>
+                            <span className={styles["fonte-media"]}>Dados do Cliente</span>
+                            <span className={styles["fonte-pequena"]}>{cliente.nome}</span>
+                            <span className={styles["fonte-pequena"]}>{cliente.telefone}</span>
+                            <span className={styles["fonte-pequena"]}>{cliente.email}</span>
+                        </div>
+                    </div>
+
+                    <div className={styles["veiculo"]}>
+                        <div className={styles["titulo1"]}>
+                            <span className={styles["fonte-media"]}>Dados do Veículo</span>
+                        </div>
+
+                        <div className={styles["titulos2"]}>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Placa</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Cor</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Modelo</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Ano</span>
+                            </div>
+                        </div>
+
+                        <div className={styles["linhaRegistro"]}>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-pequena"]}>{veiculo.placa}</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-pequena"]}>{veiculo.cor}</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-pequena"]}>{veiculo.modelo}</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-pequena"]}>{veiculo.ano}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles["produto"]}>
+                        <div className={styles["titulo1"]}>
+                            <span className={styles["fonte-media"]}>Produtos</span>
+                        </div>
+
+                        <div className={styles["titulos2"]}>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Nome</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Valor Unidade</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Garantia</span>
+                            </div>
+                        </div>
+
+                        {produtos.map((produto, index) => (
+                            <div className={styles["linhaRegistro"]} key={index}>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>{produto.nome}</span>
+                                </div>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>R$ {Number(produto.valorVenda)}</span>
+                                </div>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>{produto.garantia}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles["servicos"]}>
+                        <div className={styles["titulo1"]}>
+                            <span className={styles["fonte-media"]}>Serviços</span>
+                        </div>
+
+                        <div className={styles["titulos2"]}>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Nome</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Valor Total</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Garantia</span>
+                            </div>
+                        </div>
+
+                        {servicos.map((servico, index) => (
+                            <div className={styles["linhaRegistro"]} key={index}>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>{servico.nome}</span>
+                                </div>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>R$ {servico.valorServico}</span>
+                                </div>
+                                <div className={styles["unico"]}>
+                                    <span className={styles["fonte-pequena"]}>{servico.garantia}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles["total"]}>
+                        <div>
+                            <span className={styles["fonte-grande"]}>Valor Total</span>
+                        </div>
+                        <div>
+                            <span className={styles["fonte-grande"]}>R$ {valorTotal}</span>
+                        </div>
+                    </div>
+
+                    <div className={styles["footer"]}>
+                        <img src={logo} alt="" width={"200px"} />
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div>
-        <span className={styles["fonte-grande"]}>R$</span><span className={styles["fonte-grande"]}>235,95</span>  
-        </div>
-
-        </div>
-
-
-        <div className={styles["footer"]}>
-            <img src={logo} alt="" width={"200px"}/>
-        </div>
-
-
-        </div>
-       </div>
-
-    </div>
-      
     );
 };
 

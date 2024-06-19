@@ -1,20 +1,20 @@
-.body{
+.body {
     display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Product Sans", sans-serif;
-      font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    font-family: "Product Sans", sans-serif;
+    font-weight: 600;
 }
 
 
-.botao{
+.botao {
     margin-top: 5vh;
     margin-bottom: 5vh;
     display: flex;
     justify-content: center;
 }
 
-.folha{
+.folha {
     background-color: #EDEBE7;
     height: auto;
     display: flex;
@@ -24,17 +24,17 @@
     gap: 5vh;
 }
 
-.id{
+.id {
     display: flex;
     width: 100%;
 }
 
-.id_tag{
+.id_tag {
     display: flex;
     width: 70%;
 }
 
-.token{
+.token {
     display: flex;
     width: 30%;
     display: flex;
@@ -42,120 +42,120 @@
     justify-content: end;
 }
 
-.infosGerais{
-display: flex;
-width: 100%;
-justify-content: space-between;
-gap: 25px;
-}
-
-.infos1{
-   display: flex;
-   flex-direction: column;
-   width: 60%; 
-}
-
-.infos2{
-    display: flex;
-    flex-direction: column;
-    width: 33%; 
- }
-
- .infos3{
-    display: flex;
-    flex-direction: column;
-    width: 33%; 
-    margin-left: 25vh;
- }
-
-.fonte-grande{
-    font-weight: 700;
-    color: #474747;
-    font-size: 5vh;
-}
-
-.fonte-grande1{
-    font-weight: 700;
-    color: #474747;
-    font-size: 8vh;
-}
-
-.fonte-pequena{
-    font-weight: 400;
-    color: #474747;
-    font-size: 18px;
-}
-
-.fonte-negrito{
-    font-weight: 700;
-    color: #474747;
-    font-size: 20px;
-}
-
-.fonte-media{
-    font-weight: 700;
-    color: #474747;
-    font-size: 27px;
-}
-
-.clienteOficina{
+.infosGerais {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    gap: 25px;
 }
 
-.oficina{
+.infos1 {
     display: flex;
     flex-direction: column;
     width: 60%;
 }
 
-.cliente{
+.infos2 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+}
+
+.infos3 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    margin-left: 25vh;
+}
+
+.fonte-grande {
+    font-weight: 700;
+    color: #474747;
+    font-size: 5vh;
+}
+
+.fonte-grande1 {
+    font-weight: 700;
+    color: #474747;
+    font-size: 8vh;
+}
+
+.fonte-pequena {
+    font-weight: 400;
+    color: #474747;
+    font-size: 18px;
+}
+
+.fonte-negrito {
+    font-weight: 700;
+    color: #474747;
+    font-size: 20px;
+}
+
+.fonte-media {
+    font-weight: 700;
+    color: #474747;
+    font-size: 27px;
+}
+
+.clienteOficina {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.oficina {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.cliente {
     display: flex;
     flex-direction: column;
     width: 45%;
 }
 
 
-.veiculo{
+.veiculo {
     display: flex;
     width: 100%;
     flex-direction: column;
     height: auto;
 }
 
-.titulo1{
+.titulo1 {
     display: flex;
     width: 100%;
 
 }
 
-.titulos2{
-display: flex;
-justify-content: space-between;
-width: 100%;
+.titulos2 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.unico{
-width: 25%;
-height: 30px;
+.unico {
+    width: 25%;
+    height: 30px;
 }
 
-.linhaRegistro{
+.linhaRegistro {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: auto;
-    }
+}
 
-.produto{
+.produto {
     display: flex;
     width: 100%;
     flex-direction: column;
     height: auto;
 }
 
-.serviços{
+.serviços {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -164,12 +164,12 @@ height: 30px;
 
 }
 
-.total{
-display: flex;
-justify-content: space-between;
+.total {
+    display: flex;
+    justify-content: space-between;
 }
 
-.footer{
+.footer {
     width: 100%;
     display: flex;
     align-items: center;
