@@ -83,7 +83,7 @@ const Home = () => {
         </div>
       </div>
       <div className={styles["carros"]}>
-        <img src={carrosCinza} alt="" />
+        <img src={carrosCinza} width={"120%"}  alt="" />
       </div>
       <div className={styles["oficinas"]}>
         <div className={styles["title"]}>

@@ -28,4 +28,21 @@ body img {
     user-select: none;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #3B563C;
+    border-radius: 15px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3B563C;
+  }
+
 /* verde: #3B563C */

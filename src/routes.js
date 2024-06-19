@@ -10,7 +10,7 @@ import Login from "./pages/login/Login";
 import Cadastro from "./pages/cadastro/Cadastro";
 import RecuperarSenha from "./pages/recuperarSenha/RecuperarSenha";
 import Perfil from "./pages/perfil/Perfil";
-
+import OrdemServico from "./pages/ordemServico/OrdemServico";
 function Rotas() {
     return (
         <>
@@ -26,6 +26,8 @@ function Rotas() {
                     <Route path="/pecas" element={<Pecas />} />
                     <Route path="/meusServicos" element={<MeusServicos />} />
                     <Route path="/oficinas/:id" element={<PagOficina />} />
+                    <Route path="/oficinas/:id" element={<PagOficina />} />
+                    <Route path="/ordens-servico" element={<OrdemServico />} />
                 </Routes>
             </BrowserRouter>
         </>

@@ -71,6 +71,8 @@ const Perfil = () => {
         })
     }
 
+
+
     useEffect(() => {
         const getDados = async () => {
             try {
@@ -125,6 +127,10 @@ const Perfil = () => {
             }
         })
         
+    }
+
+    const handleNavigate = () => {
+        navigate(`/meusServicos`);
     }
 
     return (
@@ -184,7 +190,7 @@ const Perfil = () => {
                             <img src={perfil} alt="" />
                             <p>Meu Perfil</p>
                         </div>
-                        <div className={styles.secao}>
+                        <div className={styles.secao} onClick={handleNavigate}>
                             <img src={file} alt="" />
                             <p>Meus Serviços</p>
                         </div>

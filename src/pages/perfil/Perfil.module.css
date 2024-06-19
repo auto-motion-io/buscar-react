@@ -65,10 +65,10 @@
 }
 
 .perfilGerente{
-    height: 30vh;
-    width: 30vh;
+    height: 35vh;
+    width: 23vh;
     background-color: #eceae59e;
-    border-radius: 50%;
+    border-radius: 105px;
 }
 
 .form{
