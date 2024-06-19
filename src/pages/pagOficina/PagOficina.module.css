@@ -236,10 +236,14 @@ main {
 }
 
 .cards-avaliacoes::-webkit-scrollbar-thumb {
-    border: 1.8vw solid rgba(0, 0, 0, 0);
+    border: 1.8vw solid #F0EFEC;
     background-clip: padding-box;
     border-radius: 9999px;
     background-color: #3B563C;
+}
+.cards-avaliacoes::-webkit-scrollbar-track{
+    background-color: #F0EFEC;
+    border-radius: 7vh;
 }
 
 /* FormImput.module.css */

@@ -17,6 +17,7 @@
     width: 7vh;
     background-color: #3B563C;
     border-radius: 50%;
+    cursor: pointer;
 }
 .pesquisa img{
     height: 4vh;
