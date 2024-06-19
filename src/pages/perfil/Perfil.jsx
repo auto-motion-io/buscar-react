@@ -144,12 +144,18 @@ const Perfil = () => {
 
     async function uploadImage(file){
         setIsLoading(true)
-        const filePath = `fotosUsuario/${Math.random()}.png`
+        const filePath = `fotosUsuario/${Math.random() + file.name}`
         const { error } = await supabase.storage.from('ofc-photos').upload(filePath, file)
-        if(error){
-            toast.error("Erro ao atualizar imagem "+ error.message)
-            setIsLoading(false)
-            return
+        if (error){
+            if(error.statusCode == 415){
+                toast.error("Tipo de arquilo não suportado")
+                setIsLoading(false)
+                return
+            }if (error.statusCode == 409) {
+                toast.error("Arquivo com nome duplicado, tente novamente")
+                return
+            }
+            toast.error("Erro desconhecido ao mudar imagem, tente novamente")
         }
 
         const publicUrl = supabase.storage.from("ofc-photos").getPublicUrl(filePath).data.publicUrl

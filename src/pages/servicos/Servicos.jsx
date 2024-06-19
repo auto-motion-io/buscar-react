@@ -18,7 +18,7 @@ const Servicos = () => {
   const [cardsData, setCardsData] = useState([]);
   const [tipoVeiculo, setTipoVeiculo] = useState("");
   const [palavraChave, setPalavraChave] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const tipoVeiculoOptions = ["Carro", "Moto", "Caminhão", "Ônibus", ""];
 
@@ -27,7 +27,6 @@ const Servicos = () => {
   };
 
   const getServicos = async (tipoVeiculo, palavraChave) => {
-    setIsLoading(true)
     if (!validateInput(tipoVeiculo, tipoVeiculoOptions)) {
       toast.error('Tipo de Veículo inválido');
       return;

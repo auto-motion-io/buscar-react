@@ -21,7 +21,7 @@ const Oficinas = () => {
   const [propulsao, setPropulsao] = useState("");
   const [marca, setMarca] = useState("");
   const [palavraChave, setPalavraChave] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const tipoVeiculoOptions = ["Carro", "Moto", "Caminhão", "Ônibus", ""];
   const propulsaoOptions = ["Combustão", "Híbrido", "Elétrico", ""];
@@ -48,7 +48,6 @@ const Oficinas = () => {
     }
 
     try {
-      setIsLoading(true);
       const response = await api1.get(`/oficinas/tipo-veiculo-propulsao-marca-nome?tipoVeiculo=${tipoVeiculo}&tipoPropulsao=${propulsao}&marca=${marca}&nome=${palavraChave}`);
       const { data } = response;
       

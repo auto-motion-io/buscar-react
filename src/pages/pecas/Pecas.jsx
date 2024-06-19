@@ -18,10 +18,9 @@ const Pecas = () => {
   const [valorMinimo, setValorMinimo] = useState("")
   const [valorMaximo, setValorMaximo] = useState("")
   const [palavraChave, setPalavraChave] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const getPecas = async (valorMinimo, valorMaximo, palavraChave) => {
-    setIsLoading(true)
     try {
       const response = await api1.get(`/produtoEstoque/preco-nome?precoMinimo=${valorMinimo}&precoMaximo=${valorMaximo}&nome=${palavraChave}`);
       const { data } = response;

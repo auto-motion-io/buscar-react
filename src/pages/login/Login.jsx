@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api2 } from "../../api";
 import Loader from "../../components/loader/Loader";
-import perfilPadrao from "../../utils/assets/perfilPadrao.png"
+import perfilPadrao from "../../utils/assets/userpadrao.svg"
+
 
 const Login = () => {
 

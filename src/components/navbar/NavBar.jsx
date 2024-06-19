@@ -9,7 +9,6 @@ import logo from "../../utils/assets/logo.svg";
 import Botao from "../botao/Botao";
 import imgPerfil from "../../utils/assets/perfil.svg"
 import { useNavigate } from "react-router-dom";
-import User from "../../utils/assets/userpadrao.svg"
 
 const NavBar = ({ currentPage }) => {
     var navigate = useNavigate();
@@ -72,7 +71,7 @@ const NavBar = ({ currentPage }) => {
             {logado ? (
                 <div className={styles["perfil"]}>
                     <div className={styles["fotoPerfil"]}>
-                        <img src={User} alt="" />
+                        <img src={imagem} alt="" />
                     </div>
                     <div className={styles["infosPessoais"]}>
                         <p>Boa Tarde,</p>
