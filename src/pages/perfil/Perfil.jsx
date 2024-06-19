@@ -148,14 +148,20 @@ const Perfil = () => {
         const { error } = await supabase.storage.from('ofc-photos').upload(filePath, file)
         if (error){
             if(error.statusCode == 415){
-                toast.error("Tipo de arquilo não suportado")
+                toast.error("Não foi possível alterar a imagem, tipo de arquivo não é suportado")
                 setIsLoading(false)
                 return
             }if (error.statusCode == 409) {
-                toast.error("Arquivo com nome duplicado, tente novamente")
+                toast.error("Não foi possível alterar a imagem, aquivo com nome duplicado, tente novamente!")
+                setIsLoading(false)
+                return
+            }if (error.statusCode == 413) {
+                toast.error("Não foi possível alterar a imagem, arquivo grande demais!")
+                setIsLoading(false)
                 return
             }
-            toast.error("Erro desconhecido ao mudar imagem, tente novamente")
+            toast.error("Erro desconhecido ao alterar imagem, tente novamente")
+            return
         }
 
         const publicUrl = supabase.storage.from("ofc-photos").getPublicUrl(filePath).data.publicUrl
