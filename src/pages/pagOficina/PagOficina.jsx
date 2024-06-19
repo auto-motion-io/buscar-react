@@ -287,9 +287,9 @@ const PagOficina = () => {
             <CardContent key={index} type={"miniServico"} titulo={servico.nome} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servicoPadrao.jpg"}/>
           ))}
           responsive={responsive}
-          infinite={true}
+          infinite={servicos.length >= 4}
           disableDotsControls={true}
-          autoPlay={servicos.length > 4}
+          autoPlay={servicos.length >= 4}
           autoPlayInterval={2000}
           renderPrevButton={() => {
             return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
@@ -297,7 +297,7 @@ const PagOficina = () => {
           renderNextButton={() => {
             return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
           }}
-          autoWidth={servicos.length > 4}
+          autoWidth={true}
           disableButtonsControls={servicos.length < 4}
         />
       </section>
@@ -309,9 +309,9 @@ const PagOficina = () => {
             <CardContent key={index} type={"miniPeca"} titulo={peca.nome} valor={`R$${peca.valorVenda}`} imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/pecaPadrao.jpg"}/>
           ))}
           responsive={responsive}
-          infinite={true}
+          infinite={pecas.length >= 4}
           disableDotsControls={true}
-          autoPlay={pecas.length > 4}
+          autoPlay={pecas.length >= 4}
           autoPlayInterval={2000}
           renderPrevButton={() => {
             return <div className={`${styles.arrows}`}><img src={leftArrow} alt="Previous" /></div>;
@@ -319,7 +319,7 @@ const PagOficina = () => {
           renderNextButton={() => {
             return <div style={{ rotate: "180deg" }} className={`${styles.arrows}`}><img src={leftArrow} alt="Next" /></div>;
           }}
-          autoWidth={pecas.length > 4}
+          autoWidth={true}
           disableButtonsControls={pecas.length < 4}
         />
       </section>
