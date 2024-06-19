@@ -29,6 +29,7 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard, valor,im
             avaliacaoRef.current.style.display = "none"
             containerRef.current.style.gap = "2vh"
             containerRef.current.style.marginBottom = "2vh"
+            titleRef.current.style.width = "100%"
         } else if (type === "miniPeca"){
             infosRef.current.style.display = "none"
             containerRef.current.style.height = "45vh"
@@ -39,6 +40,7 @@ const CardContent = ({ type, titulo, subT, end, tel, nota, onclickCard, valor,im
             titleRef.current.style.gap = "1vh"
             valorRef.current.style.display = "flex"
             containerRef.current.style.marginBottom = "2vh"
+            titleRef.current.style.width = "100%"
         }
     }, [type]);
 
