@@ -64,12 +64,21 @@
     gap: 2vw;
 }
 
-.perfilGerente{
-    height: 35vh;
-    width: 23vh;
+.fotoPerfil{
+    height: 30vh;
+    width: 30vh;
     background-color: #eceae59e;
     border-radius: 105px;
 }
+
+.fotoPerfil img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
 
 .form{
     width: 30vw;
@@ -93,8 +102,8 @@
 
 .save{
     display: none;
-    height: 7vh;
-    width: 7vh;
+    height: 6vh;
+    width: 6vh;
     border-radius: 50%;
     background-color: #3B563C;
     align-items: center;

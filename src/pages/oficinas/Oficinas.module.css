@@ -8,13 +8,23 @@
 
 .pesquisa{
     left: 56vw;
-    top: 50vh;
+    top: 50.2vh;
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 7vh;
     width: 7vh;
-    background-color: gray;
+    background-color: #3B563C;
     border-radius: 50%;
+}
+.pesquisa img{
+    height: 4vh;
+}
+
+.no-content{
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    display: none;
 }

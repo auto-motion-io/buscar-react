@@ -9,15 +9,40 @@ import styles from "./Servicos.module.css";
 import CardContent from "../../components/cardContent/CardContent";
 import { api1, api2 } from "../../api";
 import Footer from "../../components/footer/Footer";
+import { toast } from "react-toastify";
+import Loader from "../../components/loader/Loader";
+import lupa from "../../utils/assets/lupa-branca.svg"
 
 const Servicos = () => {
   const navigate = useNavigate();
   const [cardsData, setCardsData] = useState([]);
+  const [tipoVeiculo, setTipoVeiculo] = useState("");
+  const [palavraChave, setPalavraChave] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
-  const getServicos = async () => {
+  const tipoVeiculoOptions = ["Carro", "Moto", "Caminhão", "Ônibus", ""];
+
+  const validateInput = (value, options) => {
+    return options.includes(value);
+  };
+
+  const getServicos = async (tipoVeiculo, palavraChave) => {
+    setIsLoading(true)
+    if (!validateInput(tipoVeiculo, tipoVeiculoOptions)) {
+      toast.error('Tipo de Veículo inválido');
+      return;
+    }
+
     try {
-      const response = await api1.get("/buscar-servicos");
+      const response = await api1.get(`/buscar-servicos/tipo-veiculo-nome?tipoVeiculo=${tipoVeiculo}&nome=${palavraChave}`);
       const { data } = response;
+
+      if (response.status === 204) {
+        setCardsData("")
+        document.getElementById("no-content").style.display = "flex"
+        setIsLoading(false)
+        return
+      }
 
       const updatedData = await Promise.all(
         data.map(async (servico) => {
@@ -36,6 +61,7 @@ const Servicos = () => {
               nota: parseFloat(notaOficina.nota).toFixed(1),
             };
           } catch (error) {
+            setIsLoading(false)
             console.error(`Erro ao buscar dados para o CEP ${servico.oficina.cep}:`, error);
             return {
               ...servico,
@@ -48,15 +74,17 @@ const Servicos = () => {
 
       const filteredData = updatedData.filter((item) => item !== null);
 
+      setIsLoading(false)
       setCardsData(filteredData);
     } catch (e) {
       console.error("Erro ao buscar serviços:", e);
+      setIsLoading(false)
     }
   };
 
   useEffect(() => {
-    getServicos();
-  }, []);
+    getServicos(tipoVeiculo, palavraChave);
+  }, [palavraChave]);
 
   const handleCard = (id) => {
     navigate(`/oficinas/${id}`);
@@ -64,18 +92,33 @@ const Servicos = () => {
 
   const filtros = (
     <>
-      <Input texto={"Tipo de Veículo"} imagem={seta} height={"6vh"} width={"9vw"} tamImg={"1vh"} marginRight={"1.5vw"} />
-      <Input texto={"Valor"} imagem={seta} height={"6vh"} width={"7vw"} tamImg={"1vh"} marginRight={"1.5vw"} />
+      <Input
+        id={"inp_tpVeiculo"}
+        texto={"Tipo de Veículo"}
+        imagem={seta}
+        height={"6vh"}
+        width={"9vw"}
+        tamImg={"1vh"}
+        marginRight={"1.5vw"}
+        onChange={(e) => setTipoVeiculo(e.target.value)}
+        value={tipoVeiculo}
+        options={tipoVeiculoOptions}
+      />
+
     </>
   );
 
   return (
     <main>
+      <Loader show={isLoading} />
       <NavBar currentPage={"servicos"} />
-      <PageStart pagina={"Serviços"} filtro={filtros} />
-      <div className={styles["content"]}>
-        {cardsData &&
-          cardsData.map((data) => (
+      <PageStart pagina={"Serviços"} filtro={filtros} setPalavraChave={setPalavraChave} />
+      <div onClick={() => getServicos(tipoVeiculo, palavraChave)} className={styles["pesquisa"]}>
+        <img src={lupa} alt="Buscar" />
+      </div>
+      {!cardsData.length == 0 ? (
+        <div className={styles["content"]}>
+          {cardsData.map((data) => (
             <CardContent
               key={data.id}
               type={"Servico"}
@@ -85,9 +128,16 @@ const Servicos = () => {
               tel={data.oficina.informacoesOficina.whatsapp || "N/A"}
               nota={data.nota}
               onclickCard={() => handleCard(data.oficina.id)}
+              imagem={"https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/servico.png?t=2024-06-18T23%3A46%3A33.612Z"}
             />
           ))}
-      </div>
+        </div>
+      ) : (
+        <div id="no-content" className={styles["no-content"]}>
+          Nenhum serviço encontrado com esses filtros!
+        </div>
+      )}
+
       <Footer />
     </main>
   );
