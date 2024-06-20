@@ -95,10 +95,10 @@ const Cadastro = () => {
                 <div className={styles["container"]}>
                     <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/")} />
                     <div className={styles["form"]}>
-                        <FormInput label={"Nome*"} width={"23vw"} id={"inp_nome"} onChange={(e) => setNome(e.target.value)} />
-                        <FormInput label={"Sobrenome*"} width={"23vw"} id={"inp_sobrenome"} onChange={(e) => setSobrenome(e.target.value)} />
+                        <FormInput label={"Nome*"} width={"9.99vw"} id={"inp_nome"} onChange={(e) => setNome(e.target.value)} />
+                        <FormInput label={"Sobrenome*"} width={"9.99vw"} id={"inp_sobrenome"} onChange={(e) => setSobrenome(e.target.value)} />
                         <FormInput label={"Email*"} width={"23vw"} id={"inp_email"} onChange={(e) => setEmail(e.target.value)} />
-                        <FormInput label={"Senha*"} width={"23vw"} id={"inp_senha"} onChange={(e) => setSenha(e.target.value)} type="password" />
+                        <FormInput label={"Senha*"} width={"16vw"} id={"inp_senha"} onChange={(e) => setSenha(e.target.value)} type="password" />
                     </div>
                     <Botao texto={"Cadastrar"} width={"10vw"} onClick={(handleCadastrar)} />
                 </div>
