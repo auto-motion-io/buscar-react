@@ -26,6 +26,7 @@ const OrdemServico = () => {
     const [valorTotal, setValorTotal] = useState("");
     const [numeroOficina, setNumeroOficina] = useState("")
     const [enderecoOficina, setEnderecoOficina] = useState({});
+    const [idOs, setIdOs] = useState("");
 
     function formatarData(data) {
         const dataObj = new Date(data);
@@ -34,7 +35,6 @@ const OrdemServico = () => {
         const ano = dataObj.getFullYear();
         return `${dia}/${mes}/${ano}`;
     }
-
 
     async function consultarViaCEP(cep) {
         try {
@@ -53,11 +53,11 @@ const OrdemServico = () => {
         }
     }
 
-
     useEffect(() => {
         async function getOs() {
             try {
                 const response = await api1.get(`/ordemDeServicos/token/${token}`);
+                setIdOs(response.data.id);
                 setDataInicio(formatarData(response.data.dataInicio));
                 setDataFim(formatarData(response.data.dataFim));
                 setStatus(response.data.status);
@@ -83,17 +83,16 @@ const OrdemServico = () => {
                 setServicos(response.data.servicos);
                 setValorTotal(response.data.valorTotal);
                 setNumeroOficina(response.data.oficina.numero);
-    
+
                 await consultarViaCEP(response.data.oficina.cep);
             } catch (erro) {
-                if(erro.response.status === 404){
+                if (erro.response.status === 404) {
                     navigate("/meusServicos")
                 }
             }
         }
         getOs();
     }, [token, navigate]);
-    
 
     const gerarPDF = () => {
         const content = contentRef.current;
@@ -118,7 +117,7 @@ const OrdemServico = () => {
                 <div className={styles["folha"]}>
                     <div className={styles["id"]}>
                         <div className={styles["id_tag"]}>
-                            <span className={styles["fonte-grande1"]}>#</span><span className={styles["fonte-grande1"]}>3566</span>
+                            <span className={styles["fonte-grande1"]}>#</span><span className={styles["fonte-grande1"]}>{idOs}</span>
                         </div>
                         <div className={styles["token"]}>
                             <span className={styles["fonte-pequena"]}>Token: </span><span className={styles["fonte-pequena"]}>{token}</span>
@@ -221,22 +220,28 @@ const OrdemServico = () => {
                                 <span className={styles["fonte-negrito"]}>Garantia</span>
                             </div>
                         </div>
-
-                        {produtos.map((produto, index) => (
-                            <div className={styles["linhaRegistro"]} key={index}>
-                                <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>{produto.nome}</span>
+                        {produtos.length > 0 ? (
+                            produtos.map((produto, index) => (
+                                <div className={styles["linhaRegistro"]} key={index}>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>{produto.nome}</span>
+                                    </div>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>R$ {Number(produto.valorVenda)}</span>
+                                    </div>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>{produto.garantia}</span>
+                                    </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className={styles["linhaRegistro"]}>
                                 <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>R$ {Number(produto.valorVenda)}</span>
-                                </div>
-                                <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>{produto.garantia}</span>
+                                    <span className={styles["fonte-pequena"]}>Não há produtos</span>
                                 </div>
                             </div>
-                        ))}
+                        )}
                     </div>
-
                     <div className={styles["servicos"]}>
                         <div className={styles["titulo1"]}>
                             <span className={styles["fonte-media"]}>Serviços</span>
@@ -254,19 +259,27 @@ const OrdemServico = () => {
                             </div>
                         </div>
 
-                        {servicos.map((servico, index) => (
-                            <div className={styles["linhaRegistro"]} key={index}>
-                                <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>{servico.nome}</span>
+                        {servicos.length > 0 ? (
+                            servicos.map((servico, index) => (
+                                <div className={styles["linhaRegistro"]} key={index}>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>{servico.nome}</span>
+                                    </div>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>R$ {servico.valorServico}</span>
+                                    </div>
+                                    <div className={styles["unico"]}>
+                                        <span className={styles["fonte-pequena"]}>{servico.garantia}</span>
+                                    </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className={styles["linhaRegistro"]}>
                                 <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>R$ {servico.valorServico}</span>
-                                </div>
-                                <div className={styles["unico"]}>
-                                    <span className={styles["fonte-pequena"]}>{servico.garantia}</span>
+                                    <span className={styles["fonte-pequena"]}>Não há serviços</span>
                                 </div>
                             </div>
-                        ))}
+                        )}
                     </div>
 
                     <div className={styles["total"]}>
