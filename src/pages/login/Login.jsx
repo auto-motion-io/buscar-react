@@ -7,9 +7,11 @@ import imagemFundo from "../../utils/assets/img-login.svg"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api2 } from "../../api";
+import {
+    useGoogleLogin,
+} from "@react-oauth/google";
 import Loader from "../../components/loader/Loader";
 import perfilPadrao from "../../utils/assets/userpadrao.svg"
-
 
 const Login = () => {
 
@@ -18,6 +20,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [sub, setSub] = React.useState('');
 
     async function handleEntrar() {
         setIsLoading(true)
@@ -82,6 +85,54 @@ const Login = () => {
          }, 2500);
     }
 
+    const handleGoogleSuccess = async (credentialResponse) => {
+        sessionStorage.setItem('access_token', credentialResponse.access_token, { expires: 1 }); // expires in 1 day
+        console.log(sessionStorage.getItem('access_token'));
+        await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ` + credentialResponse.access_token,
+            },
+        })
+            .then(response => response.json())
+            .then(async data => {
+                setEmail(data.email);
+                setSub(data.sub);
+                api2.post("/usuarios/login",
+                    {
+                        email: data.email,
+                        googleSub: data.sub
+                    })
+                .then(async response => {
+
+                    const token = response.data.token
+                    console.log(token);
+                    console.log(response.data);
+                    const tokenSplitted = token.split('.');
+                    const tokenPayload = JSON.parse(atob(tokenSplitted[1]));
+                    console.log(tokenPayload)
+                    
+                    sessionStorage.setItem("idUsuario", response.data.idUsuario)
+                    sessionStorage.setItem("token", window.btoa(response.data.token))
+                    console.log(sessionStorage.getItem("idUsuario"));
+                    console.log(sessionStorage.getItem("token"));
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error('Você não possui uma conta, por favor, cadastre-se!')
+                })
+            })
+    };
+
+    const handleGoogleFail = () => {
+        toast.error('Falha ao logar com o Google');
+    }
+    
+    const handleGoogle = useGoogleLogin({
+        onSuccess: handleGoogleSuccess,
+        onError: handleGoogleFail,
+        ux_mode: 'popup'
+    });
 
     return (
         <>
@@ -98,6 +149,7 @@ const Login = () => {
                             <a href="/recuperarSenha">Esqueci minha senha</a>
                         </div>
                         <Botao texto={"Entrar"} width={"10vw"} onClick={(handleEntrar)} />
+                        <Botao texto={"Google SSO"} width={"10vw"} onClick={(handleGoogle)} />
                     </div>
                     <a href="/cadastro">Sem login? Cadastre-se</a>
                 </div>
