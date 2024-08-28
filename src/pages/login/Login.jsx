@@ -37,13 +37,13 @@ const Login = () => {
             sessionStorage.setItem("imagem", response.data.fotoUrl || perfilPadrao)
             console.log(response.data.fotoUrl)
         }).catch((e) => {
-            if(e.response.status === 401 || e.response.status === 404){
+            if (e.response.status === 401 || e.response.status === 404) {
                 toast.error("Email ou senha incorretos.")
                 setVisualErrorEffects()
-            }else if(e.response.status === 400){
+            } else if (e.response.status === 400) {
                 toast.error("Preencha todos os campos corretamente.")
                 setVisualErrorEffects(400)
-            }else{
+            } else {
                 toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
             }
             setIsLoading(false)
@@ -63,31 +63,31 @@ const Login = () => {
                 inp.style.borderColor = "#F8F7F4"
             })
         })
-    },[]);
-    function setVisualErrorEffects(status){
+    }, []);
+    function setVisualErrorEffects(status) {
         let email = document.getElementById("inp_email")
         let senha = document.getElementById("inp_senha")
         const inps = [email, senha]
 
         inps.forEach((inp) => {
-            if(status === 400){
-                if(inp.value === ""){
+            if (status === 400) {
+                if (inp.value === "") {
                     inp.style.borderColor = 'red'
                 }
-            }else{
+            } else {
                 inp.style.borderColor = 'red'
             }
         })
         setTimeout(() => {
             inps.forEach((inp) => {
-                 inp.style.borderColor = '#F8F7F4'
+                inp.style.borderColor = '#F8F7F4'
             })
-         }, 2500);
+        }, 2500);
     }
 
     const handleGoogleSuccess = async (credentialResponse) => {
-        sessionStorage.setItem('access_token', credentialResponse.access_token, { expires: 1 }); // expires in 1 day
-        console.log(sessionStorage.getItem('access_token'));
+        setIsLoading(true);
+
         await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
             method: 'POST',
             headers: {
@@ -96,38 +96,72 @@ const Login = () => {
         })
             .then(response => response.json())
             .then(async data => {
-                setEmail(data.email);
-                setSub(data.sub);
-                api2.post("/usuarios/login",
-                    {
-                        email: data.email,
-                        googleSub: data.sub
+                // Primeiro, tenta fazer o login
+                api2.post("/usuarios/login-google", {
+                    email: data.email,
+                    googleSub: data.sub
+                })
+                    .then(async response => {
+                        toast.success('Login realizado com sucesso!');
+                        navigate("/");
+                        sessionStorage.setItem("logged", true)
+                        sessionStorage.setItem("nome", response.data.nome)
+                        sessionStorage.setItem("idUsuario", response.data.idUsuario)
+                        sessionStorage.setItem("token", window.btoa(response.data.token))
+                        sessionStorage.setItem("imagem", response.data.fotoUrl || perfilPadrao)
+                        setIsLoading(false);
                     })
-                .then(async response => {
+                    .catch(async error => {
+                        console.log("Usuário não encontrado, cadastrando novo usuário...");
 
-                    const token = response.data.token
-                    console.log(token);
-                    console.log(response.data);
-                    const tokenSplitted = token.split('.');
-                    const tokenPayload = JSON.parse(atob(tokenSplitted[1]));
-                    console.log(tokenPayload)
-                    
-                    sessionStorage.setItem("idUsuario", response.data.idUsuario)
-                    sessionStorage.setItem("token", window.btoa(response.data.token))
-                    console.log(sessionStorage.getItem("idUsuario"));
-                    console.log(sessionStorage.getItem("token"));
-                })
-                .catch(error => {
-                    console.log(error);
-                    toast.error('Você não possui uma conta, por favor, cadastre-se!')
-                })
+                        // Se o login falhar, realiza o cadastro
+                        api2.post("/usuarios/cadastrar-google", {
+                            email: data.email,
+                            googleSub: data.sub,
+                            nome: data.name,
+                            fotoUrl: data.picture,
+                            sobrenome: data.family_name
+                        })
+                            .then(async response => {
+                                toast.success('Cadastro realizado com sucesso!');
+
+                                // Após o cadastro, faz o login automático
+                                api2.post("/usuarios/login-google", {
+                                    email: data.email,
+                                    googleSub: data.sub
+                                })
+                                    .then(async response => {
+                                        toast.success('Login realizado com sucesso!');
+                                        navigate("/");
+                                        sessionStorage.setItem("logged", true)
+                                        sessionStorage.setItem("nome", response.data.nome)
+                                        sessionStorage.setItem("idUsuario", response.data.idUsuario)
+                                        sessionStorage.setItem("token", window.btoa(response.data.token))
+                                        sessionStorage.setItem("imagem", response.data.fotoUrl || perfilPadrao)
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                        toast.error('Erro ao realizar login após cadastro.');
+                                    });
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                toast.error('Erro ao realizar cadastro.');
+                                setIsLoading(false);
+                            });
+                    });
             })
+            .catch(error => {
+                console.log("Erro ao obter informações do usuário:", error);
+                toast.error('Erro ao conectar com o Google');
+                setIsLoading(false);
+            });
     };
 
     const handleGoogleFail = () => {
         toast.error('Falha ao logar com o Google');
     }
-    
+
     const handleGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
         onError: handleGoogleFail,
@@ -144,7 +178,7 @@ const Login = () => {
                         <div className={styles["form"]}>
                             <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => {
                                 setEmail(e.target.value)
-                                }} />
+                            }} />
                             <FormInput label={"Senha*"} width={"20vw"} id={"inp_senha"} onChange={(e) => setSenha(e.target.value)} type="password" />
                             <a href="/recuperarSenha">Esqueci minha senha</a>
                         </div>
