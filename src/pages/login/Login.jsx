@@ -96,7 +96,6 @@ const Login = () => {
         })
             .then(response => response.json())
             .then(async data => {
-                // Primeiro, tenta fazer o login
                 api2.post("/usuarios/login-google", {
                     email: data.email,
                     googleSub: data.sub
@@ -112,9 +111,6 @@ const Login = () => {
                         setIsLoading(false);
                     })
                     .catch(async error => {
-                        console.log("Usuário não encontrado, cadastrando novo usuário...");
-
-                        // Se o login falhar, realiza o cadastro
                         api2.post("/usuarios/cadastrar-google", {
                             email: data.email,
                             googleSub: data.sub,
@@ -124,8 +120,6 @@ const Login = () => {
                         })
                             .then(async response => {
                                 toast.success('Cadastro realizado com sucesso!');
-
-                                // Após o cadastro, faz o login automático
                                 api2.post("/usuarios/login-google", {
                                     email: data.email,
                                     googleSub: data.sub
