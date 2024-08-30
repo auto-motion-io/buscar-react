@@ -177,7 +177,7 @@ const Login = () => {
                             <a href="/recuperarSenha">Esqueci minha senha</a>
                         </div>
                         <Botao texto={"Entrar"} width={"10vw"} onClick={(handleEntrar)} />
-                        <Botao texto={"Google SSO"} width={"10vw"} onClick={(handleGoogle)} />
+                        <Botao texto={"G"} cor={"#F4F2ED"} corFont={"#3B563C"} width={"3vw"} onClick={(handleGoogle)} />
                     </div>
                     <a href="/cadastro">Sem login? Cadastre-se</a>
                 </div>
