@@ -20,7 +20,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [sub, setSub] = React.useState('');
+    const [sub, setSub] = React.useState("");
 
     async function handleEntrar() {
         setIsLoading(true)
@@ -43,7 +43,11 @@ const Login = () => {
             } else if (e.response.status === 400) {
                 toast.error("Preencha todos os campos corretamente.")
                 setVisualErrorEffects(400)
-            } else {
+            } else if (e.response.status === 409) {
+                toast.error("Email cadastrado com Google. Por favor, faça login com o Google.")
+                setVisualErrorEffects()
+            } 
+            else {
                 toast.error("Ocorreu um erro inesperado. Tente novamente ou entre em contato na nossa página")
             }
             setIsLoading(false)
@@ -139,9 +143,13 @@ const Login = () => {
                                     });
                             })
                             .catch(error => {
-                                console.log(error);
+                                if (error.response.status === 409) {
+                                    toast.error('Email cadastrado com validação comum, por favor, faça login com email e senha.');
+                                    setIsLoading(false);
+                                }else{
                                 toast.error('Erro ao realizar cadastro.');
                                 setIsLoading(false);
+                                }
                             });
                     });
             })

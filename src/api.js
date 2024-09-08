@@ -6,7 +6,7 @@ const api1 = axios.create({
 });
 
 const api2 = axios.create({
-    baseURL: "https://buscar-api.azurewebsites.net"
+    baseURL: "http://localhost:8080"
 });
 
 
