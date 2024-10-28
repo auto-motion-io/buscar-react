@@ -2,11 +2,11 @@ import axios from "axios";
 import { toast } from "react-toastify"; // Importe o módulo de toast que você está utilizando
 
 const api1 = axios.create({
-    baseURL: "http://34.226.28.195:80/api" //API DO PITSTOP
+    baseURL: "http://52.204.58.45:80/api" //API DO PITSTOP
 });
 
 const api2 = axios.create({
-    baseURL: "http://54.159.46.101:80/api" //API DO BUSCAR
+    baseURL: "http://52.206.85.157:80/api" //API DO BUSCAR
 });
 
 
