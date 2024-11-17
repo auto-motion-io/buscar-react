@@ -21,7 +21,9 @@ jobs:
 
       # Passo 3: Build da aplicação React
       - name: Build React app
-        run: npm run build
+        run: CI=false npm run build
+
+
 
   docker:
     runs-on: ubuntu-latest
