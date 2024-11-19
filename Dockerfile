@@ -5,7 +5,7 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 # Copia o package.json e package-lock.json para o container
-COPY package*.json ./
+COPY package*.json ./ 
 
 # Instala as dependências
 RUN npm install
@@ -19,13 +19,19 @@ RUN npm run build
 # Etapa 2: Servir os arquivos estáticos com Nginx
 FROM nginx:alpine
 
+# Copia o arquivo de configuração do Nginx com suporte a SSL
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copia os certificados SSL para dentro do container
+COPY ./buscar_motionweb_me.crt /etc/ssl/certs/buscar_motionweb_me.crt
+COPY ./domain.key /etc/ssl/private/domain.key
+COPY ./buscar_motionweb_me.ca-bundle /etc/ssl/certs/buscar_motionweb_me.ca-bundle
 
 # Copia os arquivos do build para o diretório de onde o Nginx irá servir
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expõe a porta 80
-EXPOSE 80
+# Expõe as portas 80 (HTTP) e 443 (HTTPS)
+EXPOSE 80 443
 
 # Inicia o Nginx
 CMD ["nginx", "-g", "daemon off;"]
