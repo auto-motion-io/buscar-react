@@ -23,8 +23,6 @@ jobs:
       - name: Build React app
         run: CI=false npm run build
 
-
-
   docker:
     runs-on: ubuntu-latest
     needs: build
@@ -50,7 +48,11 @@ jobs:
         with:
           fetch-depth: 0  # Garantir que o código é clonado completamente para o build Docker
 
-      # Passo 5: Build e Push da Imagem Docker
+      # Passo 5: Criar o arquivo domain.key a partir do segredo
+      - name: Create domain.key from secret
+        run: echo "${{ secrets.DOMAIN_KEY }}" > domain.key
+
+      # Passo 6: Build e Push da Imagem Docker
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
