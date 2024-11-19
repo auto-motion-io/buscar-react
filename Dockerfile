@@ -24,7 +24,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copia os certificados SSL para dentro do container
 COPY ./buscar_motionweb_me.crt /etc/ssl/certs/buscar_motionweb_me.crt
-COPY ./domain.key /etc/ssl/private/domain.key
+COPY domain.key /etc/ssl/private/domain.key
 COPY ./buscar_motionweb_me.ca-bundle /etc/ssl/certs/buscar_motionweb_me.ca-bundle
 
 # Copia os arquivos do build para o diretório de onde o Nginx irá servir
