@@ -23,9 +23,10 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copia os certificados SSL para dentro do container
-COPY ./buscar_motionweb_me.crt /etc/ssl/certs/buscar_motionweb_me.crt
+COPY buscar_motionweb_me.crt /etc/ssl/certs/buscar_motionweb_me.crt
 COPY domain.key /etc/ssl/private/domain.key
-COPY ./buscar_motionweb_me.ca-bundle /etc/ssl/certs/buscar_motionweb_me.ca-bundle
+COPY buscar_motionweb_me.ca-bundle /etc/ssl/certs/buscar_motionweb_me.ca-bundle
+
 
 # Copia os arquivos do build para o diretório de onde o Nginx irá servir
 COPY --from=build /app/build /usr/share/nginx/html
