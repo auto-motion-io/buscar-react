@@ -6,7 +6,7 @@ const api1 = axios.create({
 });
 
 const api2 = axios.create({
-    baseURL: "https://52.7.201.120:80/api" //API DO BUSCAR
+    baseURL: "https://buscar.motionweb.me:443/api" //API DO BUSCAR
 });
 
 
