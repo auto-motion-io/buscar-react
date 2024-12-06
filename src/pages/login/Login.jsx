@@ -118,7 +118,7 @@ const Login = () => {
                         api2.post("/usuarios/cadastrar-google", {
                             email: data.email,
                             googleSub: data.sub,
-                            nome: data.name,
+                            nome: data.given_name,
                             fotoUrl: data.picture,
                             sobrenome: data.family_name
                         })
@@ -176,7 +176,7 @@ const Login = () => {
             <div className={styles["content"]}>
                 <div className={styles["left-side"]}>
                     <div className={styles["container"]}>
-                        <img src={logoBuscar} alt="Logo buscar" onClick={() => navigate("/")} />
+                        <img src={logoBuscar} alt="Logo buscar" width={"25%"} onClick={() => navigate("/")} />
                         <div className={styles["form"]}>
                             <FormInput label={"Email*"} width={"20vw"} id={"inp_email"} onChange={(e) => {
                                 setEmail(e.target.value)

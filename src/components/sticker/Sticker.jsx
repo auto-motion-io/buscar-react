@@ -13,7 +13,7 @@ const Sticker = ({ label, type, onClick = null }) => {
     const imageMap = {
         "combustão": galao,
         "elétrico": raio,
-        "híbrido": hibrido,
+        "hibrido": hibrido,
         "carro": carro,
         "moto": moto,
         "caminhão": caminhao,

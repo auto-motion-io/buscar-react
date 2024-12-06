@@ -10,15 +10,7 @@ const PageStart = ({ pagina, filtro, setPalavraChave }) => {
   return (
     <div className={styles["container"]}>
       <div className={styles["loc"]}>
-        <Input
-          id={"inp_a"}
-          texto={"Insira sua localização"}
-          imagem={local}
-          height={"7.5vh"}
-          width={"30vw"}
-          onChange={(e) => setLocalizacao(e.target.value)}
-          value={localizacao}
-        />
+      
       </div>
       <div className={styles["page-name"]}>
         <span className={styles["titulo"]}>{pagina}</span>

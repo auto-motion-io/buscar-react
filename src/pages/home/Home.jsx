@@ -75,12 +75,7 @@ const Home = () => {
           <h1>Onde a busca ganha velocidade.</h1>
           <p>Encontre sua oficina!</p>
         </div>
-        <div className={styles["search"]}>
-          <Input id={"inp_a"} texto={"Insira sua localização"} imagem={local} height={"7.5vh"} width={"30vw"} />
-          <div className={styles["lupa"]}>
-            <img src={lupa} alt="" />
-          </div>
-        </div>
+      
       </div>
       <div className={styles["carros"]}>
         <img src={carrosCinza} width={"120%"}  alt="" />

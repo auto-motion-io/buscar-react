@@ -327,11 +327,12 @@ const PagOficina = () => {
         <div className={styles["left-side"]}>
           <h1>Avaliações</h1>
           <div className={styles["cards-avaliacoes"]}>
-            {avaliacoes.length > 0 ? (
+            {
+            avaliacoes.length > 0 ? (
               avaliacoes.slice().reverse().map((avaliacao, index) => (
                 <BoxAvaliacao
                   key={index}
-                  autor={avaliacao.usuarioAvaliacao.nome + " " + avaliacao.usuarioAvaliacao.sobrenome}
+                  autor={`${avaliacao.usuarioAvaliacao.nome} ${avaliacao.usuarioAvaliacao.sobrenome || ""}`.trim()}
                   nota={avaliacao.nota.toFixed(1)}
                   comentario={avaliacao.comentario}
                   fotoPerfil={avaliacao.usuarioAvaliacao.fotoUrl || perfilPadrao}
