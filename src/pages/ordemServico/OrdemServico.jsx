@@ -69,15 +69,16 @@ const OrdemServico = () => {
                     cep: response.data.oficina.cep
                 });
                 setCliente({
-                    nome: response.data.veiculo.cliente.nome,
-                    telefone: response.data.veiculo.cliente.telefone,
-                    email: response.data.veiculo.cliente.email
+                    nome: response.data.nomeCliente,
+                    telefone: response.data.telefoneCliente,
+                    email: response.data.emailCliente,
                 });
                 setVeiculo({
-                    placa: response.data.veiculo.placa,
-                    cor: response.data.veiculo.cor,
-                    modelo: response.data.veiculo.modelo,
-                    ano: response.data.veiculo.anoFabricacao,
+                    placa: response.data.placaVeiculo,
+                    cor: response.data.corVeiculo,
+                    modelo: response.data.modeloVeiculo,
+                    ano: response.data.anoVeiculo,
+                    marca: response.data.marcaVeiculo,
                 });
                 setProdutos(response.data.produtos);
                 setServicos(response.data.servicos);
@@ -86,9 +87,10 @@ const OrdemServico = () => {
 
                 await consultarViaCEP(response.data.oficina.cep);
             } catch (erro) {
-                if (erro.response.status === 404) {
-                    navigate("/meusServicos")
-                }
+                console.log("Erro ao buscar ordem de serviço:", erro);
+                // if (erro.response.status === 404) {
+                //     navigate("/meusServicos")
+                // }
             }
         }
         getOs();
@@ -181,6 +183,9 @@ const OrdemServico = () => {
                                 <span className={styles["fonte-negrito"]}>Cor</span>
                             </div>
                             <div className={styles["unico"]}>
+                                <span className={styles["fonte-negrito"]}>Marca</span>
+                            </div>
+                            <div className={styles["unico"]}>
                                 <span className={styles["fonte-negrito"]}>Modelo</span>
                             </div>
                             <div className={styles["unico"]}>
@@ -194,6 +199,9 @@ const OrdemServico = () => {
                             </div>
                             <div className={styles["unico"]}>
                                 <span className={styles["fonte-pequena"]}>{veiculo.cor}</span>
+                            </div>
+                            <div className={styles["unico"]}>
+                                <span className={styles["fonte-pequena"]}>{veiculo.marca}</span>
                             </div>
                             <div className={styles["unico"]}>
                                 <span className={styles["fonte-pequena"]}>{veiculo.modelo}</span>
@@ -217,7 +225,7 @@ const OrdemServico = () => {
                                 <span className={styles["fonte-negrito"]}>Valor Unidade</span>
                             </div>
                             <div className={styles["unico"]}>
-                                <span className={styles["fonte-negrito"]}>Garantia</span>
+                                <span className={styles["fonte-negrito"]}>Quantidade</span>
                             </div>
                         </div>
                         {produtos.length > 0 ? (
@@ -227,10 +235,10 @@ const OrdemServico = () => {
                                         <span className={styles["fonte-pequena"]}>{produto.nome}</span>
                                     </div>
                                     <div className={styles["unico"]}>
-                                        <span className={styles["fonte-pequena"]}>R$ {Number(produto.valorVenda)}</span>
+                                        <span className={styles["fonte-pequena"]}>R$ {Number(produto.valor)}</span>
                                     </div>
                                     <div className={styles["unico"]}>
-                                        <span className={styles["fonte-pequena"]}>{produto.garantia}</span>
+                                        <span className={styles["fonte-pequena"]}>Quantidade {produto.quantidade}</span>
                                     </div>
                                 </div>
                             ))
@@ -266,7 +274,7 @@ const OrdemServico = () => {
                                         <span className={styles["fonte-pequena"]}>{servico.nome}</span>
                                     </div>
                                     <div className={styles["unico"]}>
-                                        <span className={styles["fonte-pequena"]}>R$ {servico.valorServico}</span>
+                                        <span className={styles["fonte-pequena"]}>R$ {servico.valor}</span>
                                     </div>
                                     <div className={styles["unico"]}>
                                         <span className={styles["fonte-pequena"]}>{servico.garantia}</span>
